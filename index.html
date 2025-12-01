@@ -249,8 +249,53 @@ function opentab(tabname){
         .catch(error => console.error('Error!', error.message))
     })
   </script>
+<!-- neon cursor trail + reveal + parallax + menu -->
+<script>
+// Mobile menu
+function toggleMenu(){document.querySelector('nav').classList.toggle('show')}
 
+
+// Smooth reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if(entry.isIntersecting){ entry.target.classList.add('show'); }
+});
+}, {threshold:0.15});
+reveals.forEach(r => io.observe(r));
+
+
+// Parallax effect for hero layers
+const layer1 = document.getElementById('layer1');
+const layer2 = document.getElementById('layer2');
+window.addEventListener('scroll', () => {
+const sc = window.scrollY;
+layer1.style.transform = `translateY(${sc * 0.08}px)`;
+layer2.style.transform = `translateY(${sc * 0.04}px)`;
+});
+
+
+// Neon cursor trail
+const NUM = 10; const trails = [];
+for(let i=0;i<NUM;i++){const d=document.createElement('div');d.className='trail';d.style.width='14px';d.style.height='14px';d.style.background='radial-gradient(circle, rgba(255,0,60,0.95), rgba(255,0,60,0.6) 30%, rgba(255,0,60,0.15) 60%, transparent 70%)';d.style.left='-100px';d.style.top='-100px';d.style.transition='transform .2s linear, left .12s linear, top .12s linear';document.body.appendChild(d);trails.push(d)}
+let mx=window.innerWidth/2,my=window.innerHeight/2;
+window.addEventListener('mousemove', (e)=>{mx=e.clientX;my=e.clientY; trails.forEach((t,i)=>{setTimeout(()=>{t.style.left=(mx - (i*2))+'px';t.style.top=(my - (i*2))+'px';t.style.transform=`scale(${1 - i*0.06})`;}, i*14)})});
+
+
+// Touch fallback hide trails
+window.addEventListener('touchstart', ()=>{trails.forEach(t=>t.style.display='none')})
+
+
+// Contact form (placeholder) -> show success message
+function handleSubmit(e){e.preventDefault();const name=document.getElementById('name').value;const email=document.getElementById('email').value;const msg=document.getElementById('message').value;alert('Thanks '+name+"! I received your message — I'll contact you at "+email);e.target.reset();}
+
+
+</script>
+
+
+  
 </body>
 </html>
+
 
 
