@@ -125,7 +125,23 @@ body{
   color:#fff;
   box-shadow:0 8px 30px rgba(255,112,67,0.15);
 }
-.socials a{ color:var(--muted); margin-right:10px; font-size:16px }
+
+.social-icons{
+    margin-top: 30px;
+}
+.social-icons a{
+    text-decoration: none;
+    font-size: 30px;
+    margin-right: 15px;
+    color: #ababab;
+    display: inline-block;
+    transition: transform 0.5s;
+}
+
+.social-icons a:hover{
+    color: #ff004f;
+    transform: translateY(-5px);
+}
 
 /* Portrait */
 .portrait-wrap{
@@ -279,3 +295,4 @@ body{
   .portfolio-grid{ grid-template-columns:1fr; }
   .container{ padding:0 16px }
 }
+
