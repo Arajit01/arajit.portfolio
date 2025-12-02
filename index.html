@@ -1,301 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Arajit Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arajit Portfolio</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <link rel="stylesheet" href="style.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <div class="logo">Artbord</div>
-      </div>
 
-      <nav class="nav">
-        <ul class="nav-list" id="navList">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#services">Service</a></li>
-          <li><a href="#blog">Blog</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a class="btn-cv" href="#" download>Download CV</a></li>
-        </ul>
+<div class="cursor"></div>
 
-        <button id="navToggle" class="nav-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </nav>
+<header>
+    <div class="logo">
+        <img src="Images/Logo.png" alt="ArtBoard Studio" class="logo"/>
     </div>
-  </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
 
-  <!-- HERO -->
-  <main>
-    <section id="home" class="hero">
-      <div class="container hero-grid">
-        <div class="hero-left">
-          <p class="hello">Hello, I'm</p>
-          <h1 class="hero-title">James Smith</h1>
-          <p class="subtitle"><span class="accent">A Creative Designer</span> From New York</p>
-          <p class="hero-bio">I'm creative designer based in New York, and I'm very passionate and dedicated to my work.</p>
-          <div class="hero-ctas">
-            <a href="#about" class="btn primary">About Me</a>
-            <div class="social-icons">
-               <div>
-              <a href="https://www.facebook.com/arajit.halder.58"><i class="fa-brands fa-facebook"></i></a>
-                   <a href="https://www.instagram.com/arajit.halder.58"><i class="fa-brands fa-instagram"></i></a> 
-                   <a href="https://www.linkedin.com/in/arajit-halder-8804a2205/"><i class="fa-brands fa-linkedin"></i></a>
-                   <a href="https://wa.me/916295577953"><i class="fa-brands fa-whatsapp"></i></a>
-               </div>
-            </div>
-          </div>
+<section id="home" class="hero">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="Graphics Designer.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <p class="hello">Hello, I'm</p>
+        <h1 class="hero-title">Arajit Halder</h1>
+        <p class="subtitle"><span id="typed-text" class="accent"></span></p>
+        <p class="hero-bio">I craft immersive, modern, and visually stunning designs for global brands.</p>
+        <div class="hero-ctas">
+            <a href="#portfolio">View Portfolio</a>
         </div>
-
-        <div class="hero-right">
-          <div class="portrait-wrap">
-            <!-- Replace src with assets/profile.jpg -->
-            <img src="assets/profile.jpg" alt="Profile Photo" class="portrait">
-            <div class="skill-badges">
-              <span class="badge">Ai</span>
-              <span class="badge">Ps</span>
-              <span class="badge">Figma</span>
-            </div>
-          </div>
+        <div class="social-links">
+            <a href="https://www.facebook.com/arajit.halder.58" target="_blank">F</a>
+            <a href="https://www.instagram.com/arajit.halder.58" target="_blank">I</a>
+            <a href="https://www.linkedin.com/in/arajit-halder-8804a2205/" target="_blank">L</a>
+            <a href="https://wa.me/916295577953" target="_blank">W</a>
         </div>
-      </div>
-      <div class="scroll-hint">Scroll <i class="fa fa-arrow-down"></i></div>
-    </section>
+    </div>
 
-    <!-- FEATURES -->
-    <section id="services" class="features">
-      <div class="container features-grid">
-        <article class="feature">
-          <div class="icon"><i class="fa-solid fa-bullseye"></i></div>
-          <h4>Pixel Perfect</h4>
-          <p>Most common methods for designing websites that work well on desktop is responsive and adaptive design.</p>
-        </article>
+    <!-- Scroll down arrow -->
 
-        <article class="feature">
-          <div class="icon"><i class="fa-solid fa-brush"></i></div>
-          <h4>High Quality</h4>
-          <p>Most common methods for designing websites that work well on desktop is responsive and adaptive design.</p>
-        </article>
+<div class="scroll-arrow"><i class="fas fa-chevron-down"></i></div>
+</section>
 
-        <article class="feature">
-          <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
-          <h4>Awesome Idea</h4>
-          <p>Most common methods for designing websites that work well on desktop is responsive and adaptive design.</p>
-        </article>
-      </div>
-    </section>
+<section id="portfolio" class="reveal">
+    <h2>My Projects</h2>
+</section>
 
-    <!-- ABOUT / CTA -->
-    <section id="about" class="about">
-      <div class="container about-grid">
-        <div class="about-left">
-          <div class="about-card">
-            <img src="assets/team-1.jpg" alt="Team" />
-            <div class="stat">
-              <div class="stat-num">1</div>
-              <div class="stat-text">Years of Success</div>
-            </div>
-            <div class="projects-bubble">OK <span>Total Projects</span></div>
-          </div>
-        </div>
+<section id="about" class="reveal">
+    <h2>About Me</h2>
+    <p>I am a futuristic graphic designer specializing in immersive visual design.</p>
+</section>
 
-        <div class="about-right">
-          <p class="small">I'm a Designer</p>
-          <h2>I Can Design Anything You Want</h2>
-          <p class="about-text">Hello there! I'm a web designer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional web developer, I have acquired the skills and knowledge necessary to make your project a success. I enjoy every step of the design process, from discussion and collaboration.</p>
-          <a class="btn primary" href="#portfolio">Hire Me</a>
-        </div>
-      </div>
-    </section>
+<section id="contact" class="reveal contact-booking-section">
+    <h2>Contact Me</h2>
+    <p>Send me a message:</p>
 
-    <!-- PORTFOLIO -->
-    <section id="portfolio" class="portfolio">
-      <div class="container">
-        <div class="section-head">
-          <p class="kicker">Portfolio</p>
-          <h3>My Amazing Works</h3>
-          <p class="lead">Most common methods for designing websites that work well on desktop is responsive and adaptive design</p>
-        </div>
+    <form id="contactForm" class="contact-form">
+        <input type="text" name="from_name" placeholder="Your Name" required>
+        <input type="email" name="reply_to" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Message" rows="5"></textarea>
+        <button type="submit" class="btn primary">Send Message</button>
+    </form>
 
-        <div class="filters">
-          <button class="filter active" data-filter="all">All</button>
-          <button class="filter" data-filter="youtube">Youtube</button>
-          <button class="filter" data-filter="vimeo">Vimeo</button>
-          <button class="filter" data-filter="soundcloud">Soundcloud</button>
-          <button class="filter" data-filter="popup">Popup</button>
-          <button class="filter" data-filter="detail">Detail</button>
-        </div>
+    <p id="contact-msg" class="contact-msg"></p>
+</section>
 
-        <div class="portfolio-grid" id="portfolioGrid">
-          <!-- Project card (repeatable) -->
-          <div class="card" data-cat="youtube">
-            <img src="assets/p1.jpg" alt="Work 1">
-            <div class="card-body">
-              <h4>Minimal Art</h4>
-              <p>Youtube</p>
-            </div>
-          </div>
+<footer>
+    © 2025 Arajit Halder. All Rights Reserved.
+</footer>
 
-          <div class="card" data-cat="vimeo">
-            <img src="assets/p2.jpg" alt="Work 2">
-            <div class="card-body">
-              <h4>Organic Shape</h4>
-              <p>Vimeo</p>
-            </div>
-          </div>
-
-          <div class="card" data-cat="soundcloud">
-            <img src="assets/p3.jpg" alt="Work 3">
-            <div class="card-body">
-              <h4>Bloom</h4>
-              <p>Soundcloud</p>
-            </div>
-          </div>
-
-          <div class="card" data-cat="detail">
-            <img src="assets/p4.jpg" alt="Work 4">
-            <div class="card-body">
-              <h4>Still Life</h4>
-              <p>Detail</p>
-            </div>
-          </div>
-
-          <!-- add more cards as needed -->
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="contact">
-      <div class="container contact-grid">
-        <div>
-          <h3>Get in touch</h3>
-          <p>Have a project or want to say hi? Send me a message and I'll get back to you.</p>
-        </div>
-
-        <form id="contactForm" class="contact-form">
-          <input type="text" name="name" placeholder="Your name" required>
-          <input type="email" name="email" placeholder="Your email" required>
-          <textarea name="message" placeholder="Message" rows="5" required></textarea>
-          <button class="btn primary" type="submit">Send Message</button>
-        </form>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© <span id="year"></span> DizMe — All rights reserved.</p>
-      </div>
-    </footer>
-  </main>
-
-  <script src="script.js"></script>
-
-<script>
-var tablinks = document.getElementsByClassName("tab-links");
-var tabcontents = document.getElementsByClassName("tab-contents");
-
-function opentab(tabname){
-    for(tablink of tablinks){
-        tablink.classList.remove("active-link")
-    }
-    for(tabcontent of tabcontents){
-        tabcontent.classList.remove("active-tab")
-    }
-    event.currentTarget.classList.add("active-link");
-    document.getElementById(tabname).classList.add("active-tab")
-}
-    </script>
-
-    <script>
-        var sidemenu = document.getElementById("sidemenu");
-
-        function openmenu(){
-            sidemenu.style.right = "0";
-        }
-        function closemenu(){
-            sidemenu.style.right = "-200px";
-        }
-
-    </script>
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxjtjPnstg-ffEGa2_hn8rFKbm9peA7SfQFiRZ_NDRgtwmIQ2QImpCfE49ktPlFpFwA/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            msg.innerHTML = "Message sent successfully"
-            setTimeout(function(){
-                msg.innerHTML = ""
-            },5000)
-            form.reset()
-        })
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
-<!-- neon cursor trail + reveal + parallax + menu -->
-<script>
-// Mobile menu
-function toggleMenu(){document.querySelector('nav').classList.toggle('show')}
-
-
-// Smooth reveal on scroll
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if(entry.isIntersecting){ entry.target.classList.add('show'); }
-});
-}, {threshold:0.15});
-reveals.forEach(r => io.observe(r));
-
-
-// Parallax effect for hero layers
-const layer1 = document.getElementById('layer1');
-const layer2 = document.getElementById('layer2');
-window.addEventListener('scroll', () => {
-const sc = window.scrollY;
-layer1.style.transform = `translateY(${sc * 0.08}px)`;
-layer2.style.transform = `translateY(${sc * 0.04}px)`;
-});
-
-
-// Neon cursor trail
-const NUM = 10; const trails = [];
-for(let i=0;i<NUM;i++){const d=document.createElement('div');d.className='trail';d.style.width='14px';d.style.height='14px';d.style.background='radial-gradient(circle, rgba(255,0,60,0.95), rgba(255,0,60,0.6) 30%, rgba(255,0,60,0.15) 60%, transparent 70%)';d.style.left='-100px';d.style.top='-100px';d.style.transition='transform .2s linear, left .12s linear, top .12s linear';document.body.appendChild(d);trails.push(d)}
-let mx=window.innerWidth/2,my=window.innerHeight/2;
-window.addEventListener('mousemove', (e)=>{mx=e.clientX;my=e.clientY; trails.forEach((t,i)=>{setTimeout(()=>{t.style.left=(mx - (i*2))+'px';t.style.top=(my - (i*2))+'px';t.style.transform=`scale(${1 - i*0.06})`;}, i*14)})});
-
-
-// Touch fallback hide trails
-window.addEventListener('touchstart', ()=>{trails.forEach(t=>t.style.display='none')})
-
-
-// Contact form (placeholder) -> show success message
-function handleSubmit(e){e.preventDefault();const name=document.getElementById('name').value;const email=document.getElementById('email').value;const msg=document.getElementById('message').value;alert('Thanks '+name+"! I received your message — I'll contact you at "+email);e.target.reset();}
-
-
-</script>
-
-
-  
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
-
-
-
