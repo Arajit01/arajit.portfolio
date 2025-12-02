@@ -101,28 +101,10 @@ nav a:hover {
     display: inline-block;
 }
 
-.social-links {
-    margin-top: 30px;
-}
-
-.social-links a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    margin: 0 5px;
-    background: #111;
-    color: #0ff;
-    border-radius: 50%;
-    transition: all 0.3s;
-}
-
-.social-links a:hover {
-    background: #0ff;
-    color: #000;
-}
-
+/* socials round */
+.socials{display:flex;gap:12px;justify-content:center;margin-top:22px}
+.socials a{width:46px;height:46px;border-radius:50%;display:inline-grid;place-items:center;background:rgba(255,255,255,0.04);color:#fff;text-decoration:none;transition:transform .22s, box-shadow .22s}
+.socials a:hover{transform:translateY(-6px);box-shadow:0 14px 34px rgba(0,232,255,0.06);color:#000;background:var(--accent)}
 /* Scroll arrow */
 .scroll-arrow {
     position: absolute;
@@ -261,3 +243,4 @@ footer {
         line-height: 30px;
     }
 }
+
