@@ -1,91 +1,146 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arajit Portfolio</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arajit Halder — Portfolio</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="cursor"></div>
+  <!-- Custom cursor -->
+  <div id="cursor" aria-hidden="true"></div>
 
-<header>
-    <div class="logo">
-        <img src="Images/Logo.png" alt="ArtBoard Studio" class="logo"/>
-    </div>
+  <!-- Header -->
+  <header>
+    <div class="logo"><img src="Images/Logo.png" alt="Logo" /></div>
     <nav>
-        <a href="#home">Home</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+      <a href="#home">Home</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </nav>
-</header>
+  </header>
 
-<section id="home" class="hero">
-    <video autoplay muted loop playsinline class="hero-video">
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <video class="hero-video" autoplay muted loop playsinline>
         <source src="Graphics Designer.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
-    <div class="hero-overlay"></div>
+      </video>
+      <div class="hero-overlay"></div>
 
-    <div class="hero-content">
+      <div class="hero-inner">
         <p class="hello">Hello, I'm</p>
         <h1 class="hero-title">Arajit Halder</h1>
-        <p class="subtitle"><span id="typed-text" class="accent"></span></p>
-        <p class="hero-bio">I craft immersive, modern, and visually stunning designs for global brands.</p>
-        <div class="hero-ctas">
-            <a href="#portfolio">View Portfolio</a>
+        <p class="subtitle">
+          <span id="typed-text" aria-live="polite"></span><span id="hero-caret" aria-hidden="true">|</span>
+        </p>
+        <p class="hero-desc">I craft immersive, modern, and visually stunning designs for global brands.</p>
+
+        <div class="hero-actions">
+          <a class="btn" href="#portfolio">View Portfolio <i class="fa-regular fa-eye"></i></a>
         </div>
+
         <div class="socials" aria-label="Social links">
-            <a href="https://facebook.com/arajit.halder.58" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fab fa-facebook-f"></i></a>
-          <a href="https://instagram.com/arajit.halder.58" target="_blank" rel="noopener" aria-label="Instagram"> <i class="fab fa-instagram"></i></a>
-          <a href="https://linkedin.com/in/arajit-halder-8804a2205/" target="_blank" rel="noopener" aria-label="LinkedIn"> <i class="fab fa-linkedin-in"></i></a>
-          <a href="https://wa.me/916295577953" target="_blank" rel="noopener" aria-label="WhatsApp"> <i class="fab fa-whatsapp"></i></a>
+          <a href="https://facebook.com/arajit.halder.58" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com/arajit.halder.58" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+          <a href="https://linkedin.com/in/arajit-halder-8804a2205/" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://wa.me/916295577953" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
         </div>
-    </div>
 
-    <!-- Scroll down arrow -->
+        <button id="scroll-arrow" class="scroll-arrow" aria-label="Scroll to portfolio">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+    </section>
 
-<div class="scroll-arrow"><i class="fas fa-chevron-down"></i></div>
-</section>
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="section reveal" aria-label="Portfolio">
+      <div class="container">
+        <h2>Portfolio</h2>
 
-<section id="portfolio" class="reveal">
-    <h2>My Projects</h2>
-</section>
+        <div class="filters" role="tablist" aria-label="Portfolio categories">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="branding">Branding</button>
+          <button class="filter" data-filter="ui">UI</button>
+          <button class="filter" data-filter="illustration">Illustration</button>
+          <button class="filter" data-filter="motion">Motion</button>
+        </div>
 
-<section id="about" class="reveal">
-    <h2>About Me</h2>
-    <p>I am a futuristic graphic designer specializing in immersive visual design.</p>
-</section>
+        <div id="grid" class="grid" aria-live="polite">
+          <!-- Replace the images and titles with your projects -->
+          <article class="card" data-category="branding" tabindex="0">
+            <img src="Images/project1.jpg" alt="Brand Project 1">
+            <div class="card-meta"><h3>Brand A</h3><p>Branding</p></div>
+          </article>
 
-<section id="contact" class="reveal contact-booking-section">
-    <h2>Contact Me</h2>
-    <p>Send me a message:</p>
+          <article class="card" data-category="ui" tabindex="0">
+            <img src="Images/project2.jpg" alt="UI Project 1">
+            <div class="card-meta"><h3>App UI</h3><p>UI</p></div>
+          </article>
 
-    <form id="contactForm" class="contact-form">
-        <input type="text" name="from_name" placeholder="Your Name" required>
-        <input type="email" name="reply_to" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Message" rows="5"></textarea>
-        <button type="submit" class="btn primary">Send Message</button>
-    </form>
+          <article class="card" data-category="illustration" tabindex="0">
+            <img src="Images/project3.jpg" alt="Illustration">
+            <div class="card-meta"><h3>Illustration</h3><p>Illustration</p></div>
+          </article>
 
-    <p id="contact-msg" class="contact-msg"></p>
-</section>
+          <article class="card" data-category="motion" tabindex="0">
+            <img src="Images/project4.jpg" alt="Motion Project">
+            <div class="card-meta"><h3>Motion Reel</h3><p>Motion</p></div>
+          </article>
 
-<footer>
-    © 2025 Arajit Halder. All Rights Reserved.
-</footer>
+          <article class="card" data-category="branding" tabindex="0">
+            <img src="Images/project5.jpg" alt="Brand B">
+            <div class="card-meta"><h3>Brand B</h3><p>Branding</p></div>
+          </article>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
-<script src="script.js"></script>
+          <article class="card" data-category="ui" tabindex="0">
+            <img src="Images/project6.jpg" alt="UI Kit">
+            <div class="card-meta"><h3>UI Kit</h3><p>UI</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section reveal">
+      <div class="container">
+        <h2>About</h2>
+        <p>Futuristic graphic designer focusing on brand identities, UI/UX and motion design.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section reveal">
+      <div class="container contact-wrap">
+        <h2>Contact</h2>
+        <form id="contactForm">
+          <div class="form-row">
+            <input name="from_name" type="text" placeholder="Your name" required>
+            <input name="reply_to" type="email" placeholder="Your email" required>
+          </div>
+          <textarea name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
+          <div class="form-actions">
+            <button class="btn" type="submit">Send message</button>
+            <div id="form-status" role="status" aria-live="polite"></div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="container">© 2025 Arajit Halder</div></footer>
+
+  <!-- EmailJS (provided keys) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+  <!-- App JS -->
+  <script src="script.js"></script>
 </body>
 </html>
-
-
