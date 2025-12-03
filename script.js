@@ -70,13 +70,44 @@ function eraseChar(){
 }
 
 /* Scroll arrow -> portfolio */
-const arrow = $('#scroll-arrow');
-if(arrow){
-  arrow.addEventListener('click', () => {
-    const next = $('#portfolio');
-    if(next) next.scrollIntoView({behavior:'smooth', block:'start'});
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* -------------------- Scroll Arrow -------------------- */
+  const arrow = document.getElementById("scroll-arrow");
+  const nextSection = document.querySelector("#portfolio");
+
+  arrow.addEventListener("click", () => {
+      nextSection.scrollIntoView({ behavior: "smooth" });
   });
-}
+
+  /* -------------------- Typing Animation -------------------- */
+  const typedText = document.getElementById("typed-text");
+  const texts = ["A Creative Designer", "UI/UX Specialist", "Brand Identity Expert", "Motion Designer"];
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function type() {
+      let current = texts[textIndex];
+      let displayed = isDeleting ? current.substring(0, charIndex--) : current.substring(0, charIndex++);
+      typedText.textContent = displayed;
+
+      if (!isDeleting && charIndex === current.length + 1) {
+          isDeleting = true;
+          setTimeout(type, 1000); // pause before deleting
+      } else if (isDeleting && charIndex === -1) {
+          isDeleting = false;
+          textIndex = (textIndex + 1) % texts.length;
+          setTimeout(type, 500);
+      } else {
+          setTimeout(type, isDeleting ? 50 : 100);
+      }
+  }
+
+  type(); // start typing
+
+});
+
 
 /* 3D reveal using IntersectionObserver */
 const reveals = $$('.reveal');
