@@ -143,12 +143,32 @@ $$('a[href^="#"]').forEach(a => {
 });
 
 /* EmailJS contact */
-const form = $('#contactForm');
-const statusEl = $('#form-status');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  statusEl.textContent = 'Sending…';
-  emailjs.sendForm('service_d34z2l8','template_mcod6qm', form)
-    .then(_ => { statusEl.textContent = 'Message sent! I will reply soon.'; form.reset(); })
-    .catch(_ => { statusEl.textContent = 'Sending failed. Try again later.'; });
+(function(){
+    emailjs.init("jx3isFO17H8uIbius"); 
+})();
+
+document.getElementById("contactForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const params = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+    };
+
+    // 1️⃣ Send Email to YOU
+    emailjs.send("service_d34z2l8", "template_mcod6qm", params)
+    .then(function() {
+
+        // 2️⃣ Auto reply email to visitor
+        return emailjs.send("service_d34z2l8", "template_p0u4mwf", params);
+
+    }).then(function() {
+        document.getElementById("statusMsg").innerHTML =
+            "Message sent successfully! Check your inbox.";
+    }).catch(function(error){
+        console.error("Error:", error);
+        document.getElementById("statusMsg").innerHTML =
+            "Something went wrong. Please try again.";
+    });
 });
