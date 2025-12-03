@@ -255,8 +255,9 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
         document.getElementById("statusMsg").innerHTML =
             "Message sent successfully! Check your inbox.";
     })..catch(() => {
-            document.getElementById("contact-msg").innerHTML = "Failed to Send Message!";
+            document.getElementById("statusMsg").innerHTML = "Failed to Send Message!";
         });
 });
+
 
 
