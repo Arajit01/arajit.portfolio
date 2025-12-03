@@ -231,50 +231,33 @@ $$('a[href^="#"]').forEach(a=>{
 /* ==========================
    Contact form (EmailJS send + auto-reply) + auto-clear
    ========================== */
-const contactForm = document.getElementById("contactForm");
-const statusMsg = document.getElementById("statusMsg");
+(function(){
+    emailjs.init("jx3isFO17H8uIbius"); 
+})();
 
-if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
-    e.preventDefault();
+document.getElementById("contactForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
+    const params = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+    };
 
-    if (!name || !email || !message) {
-      statusMsg.textContent = "Please fill out all fields.";
-      return;
-    }
+    // 1️⃣ Send Email to YOU
+    emailjs.send("service_d34z2l8", "template_mcod6qm", params)
+    .then(function() {
 
-    statusMsg.textContent = "Sending…";
+        // 2️⃣ Auto reply email to visitor
+        return emailjs.send("service_d34z2l8", "template_p0u4mwf", params);
 
-    const params = {
-      from_name: name,
-      reply_to: email,
-      message: message
-    };
-
-    // ✔ Send to OWNER (template_mcod6qm)
-    emailjs
-      .send("service_d34z2l8", "template_mcod6qm", params)
-      .then(() => {
-        // ✔ Send AUTO REPLY to visitor (template_p0u4mwf)
-        return emailjs.send(
-          "service_d34z2l8",
-          "template_p0u4mwf",
-          params
-        );
-      })
-      .then(() => {
-        statusMsg.textContent = "Message sent! Check your email.";
-        contactForm.reset(); // ✔ Clear form properly
-        setTimeout(() => (statusMsg.textContent = ""), 5000);
-      })
-      .catch((err) => {
-        console.error("EmailJS Error:", err);
-        statusMsg.textContent = "Sending failed. Try again.";
-      });
-  });
-}
+    }).then(function() {
+        document.getElementById("statusMsg").innerHTML =
+            "Message sent successfully! Check your inbox.";
+    }).catch(function(error){
+        console.error("Error:", error);
+        document.getElementById("statusMsg").innerHTML =
+            "Something went wrong. Please try again.";
+    });
+});
 
