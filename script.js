@@ -231,43 +231,50 @@ $$('a[href^="#"]').forEach(a=>{
 /* ==========================
    Contact form (EmailJS send + auto-reply) + auto-clear
    ========================== */
-const contactForm = $('#contactForm');
-const statusMsg = $('#statusMsg');
+const contactForm = document.getElementById("contactForm");
+const statusMsg = document.getElementById("statusMsg");
 
 if (contactForm) {
-  contactForm.addEventListener('submit', e=>{
+  contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    if (!window.emailjs || typeof emailjs.send !== 'function') {
-      statusMsg && (statusMsg.textContent = 'Email service unavailable.');
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !message) {
+      statusMsg.textContent = "Please fill out all fields.";
       return;
     }
+
+    statusMsg.textContent = "Sending…";
 
     const params = {
-      from_name: ($('#name') ? $('#name').value.trim() : ''),
-      reply_to: ($('#email') ? $('#email').value.trim() : ''),
-      message: ($('#message') ? $('#message').value.trim() : '')
+      from_name: name,
+      reply_to: email,
+      message: message
     };
 
-    if (!params.from_name || !params.reply_to || !params.message) {
-      statusMsg && (statusMsg.textContent = 'Please fill all fields.');
-      return;
-    }
-
-    statusMsg && (statusMsg.textContent = 'Sending…');
-
-    // 1) send to owner
-    emailjs.send('service_d34z2l8', 'template_mcod6qm', params)
-      .then(()=> {
-        // 2) auto reply to visitor
-        return emailjs.send('service_d34z2l8', 'template_p0u4mwf', params);
-      }).then(()=> {
-        statusMsg && (statusMsg.textContent = 'Message sent! Check your inbox.');
-        contactForm.reset(); // CLEAR FORM
-        setTimeout(()=> statusMsg && (statusMsg.textContent = ''), 4500);
-      }).catch(err=>{
-        console.error('EmailJS error:', err);
-        statusMsg && (statusMsg.textContent = 'Failed to send. Try again later.');
+    // ✔ Send to OWNER (template_mcod6qm)
+    emailjs
+      .send("service_d34z2l8", "template_mcod6qm", params)
+      .then(() => {
+        // ✔ Send AUTO REPLY to visitor (template_p0u4mwf)
+        return emailjs.send(
+          "service_d34z2l8",
+          "template_p0u4mwf",
+          params
+        );
+      })
+      .then(() => {
+        statusMsg.textContent = "Message sent! Check your email.";
+        contactForm.reset(); // ✔ Clear form properly
+        setTimeout(() => (statusMsg.textContent = ""), 5000);
+      })
+      .catch((err) => {
+        console.error("EmailJS Error:", err);
+        statusMsg.textContent = "Sending failed. Try again.";
       });
   });
 }
+
