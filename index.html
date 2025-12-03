@@ -122,16 +122,13 @@
       <div class="container contact-wrap">
         <h2>Contact</h2>
         <form id="contactForm">
-          <div class="form-row">
-            <input name="from_name" type="text" placeholder="Your name" required>
-            <input name="reply_to" type="email" placeholder="Your email" required>
-          </div>
-          <textarea name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
-          <div class="form-actions">
-            <button class="btn" type="submit">Send message</button>
-            <div id="form-status" role="status" aria-live="polite"></div>
-          </div>
-        </form>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <textarea id="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+</form>
+
+<p id="statusMsg"></p>
       </div>
     </section>
   </main>
@@ -144,3 +141,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
