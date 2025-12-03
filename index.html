@@ -15,7 +15,7 @@
 <body>
 
   <!-- Custom cursor -->
-  <div id="cursor"></div>
+  <div id="cursor" aria-hidden="true"></div>
 
   <!-- Header -->
   <header>
@@ -37,10 +37,10 @@
 
     <div class="hero-inner">
       <p class="hello">Hello, I'm</p>
-      <h1 class="hero-title">Arajit Halder</h1>
+      <h1 class="hero-title" id="float-title">Arajit Halder</h1>
 
       <p class="subtitle">
-        <span id="typed-text"></span><span id="hero-caret">|</span>
+        <span id="typed-text" aria-live="polite"></span><span id="hero-caret" aria-hidden="true">|</span>
       </p>
 
       <p class="hero-desc">I craft immersive, modern, and visually stunning designs for global brands.</p>
@@ -54,19 +54,20 @@
         <a href="https://wa.me/916295577953" target="_blank"><i class="fab fa-whatsapp"></i></a>
       </div>
 
-      <!-- Scroll Arrow -->
-      <button id="scroll-arrow" class="scroll-arrow">
+      <!-- Scroll Arrow (fixed bottom center while visible) -->
+      <button id="scroll-arrow" class="scroll-arrow" aria-label="Scroll to portfolio">
         <i class="fa-solid fa-chevron-down"></i>
       </button>
     </div>
   </section>
 
   <!-- PORTFOLIO -->
-  <section id="portfolio" class="section reveal">
+  <section id="portfolio" class="section reveal" aria-label="Portfolio">
     <div class="container">
       <h2>Portfolio</h2>
 
-      <div class="filters">
+      <div class="filters" role="tablist" aria-label="Portfolio categories">
+        <span id="filter-underline" aria-hidden="true"></span>
         <button class="filter active" data-filter="all">All</button>
         <button class="filter" data-filter="branding">Branding</button>
         <button class="filter" data-filter="ui">UI</button>
@@ -74,13 +75,31 @@
         <button class="filter" data-filter="motion">Motion</button>
       </div>
 
-      <div class="grid" id="grid">
-        <article class="card" data-category="branding"><img src="Images/project1.jpg"><div class="card-meta"><h3>Brand A</h3></div></article>
-        <article class="card" data-category="ui"><img src="Images/project2.jpg"><div class="card-meta"><h3>App UI</h3></div></article>
-        <article class="card" data-category="illustration"><img src="Images/project3.jpg"><div class="card-meta"><h3>Illustration</h3></div></article>
-        <article class="card" data-category="motion"><img src="Images/project4.jpg"><div class="card-meta"><h3>Motion Reel</h3></div></article>
-        <article class="card" data-category="branding"><img src="Images/project5.jpg"><div class="card-meta"><h3>Brand B</h3></div></article>
-        <article class="card" data-category="ui"><img src="Images/project6.jpg"><div class="card-meta"><h3>UI Kit</h3></div></article>
+      <div id="grid" class="grid" aria-live="polite">
+        <article class="card" data-category="branding" tabindex="0">
+          <img src="Images/project1.jpg" alt="Project 1">
+          <div class="card-meta"><h3>Brand A</h3></div>
+        </article>
+        <article class="card" data-category="ui" tabindex="0">
+          <img src="Images/project2.jpg" alt="Project 2">
+          <div class="card-meta"><h3>App UI</h3></div>
+        </article>
+        <article class="card" data-category="illustration" tabindex="0">
+          <img src="Images/project3.jpg" alt="Project 3">
+          <div class="card-meta"><h3>Illustration</h3></div>
+        </article>
+        <article class="card" data-category="motion" tabindex="0">
+          <img src="Images/project4.jpg" alt="Project 4">
+          <div class="card-meta"><h3>Motion Reel</h3></div>
+        </article>
+        <article class="card" data-category="branding" tabindex="0">
+          <img src="Images/project5.jpg" alt="Project 5">
+          <div class="card-meta"><h3>Brand B</h3></div>
+        </article>
+        <article class="card" data-category="ui" tabindex="0">
+          <img src="Images/project6.jpg" alt="Project 6">
+          <div class="card-meta"><h3>UI Kit</h3></div>
+        </article>
       </div>
     </div>
   </section>
@@ -88,14 +107,11 @@
   <!-- ABOUT -->
   <section id="about" class="section reveal">
     <div class="container about-box">
-      
       <img src="Images/User.png" class="about-img" alt="Arajit Halder">
-
       <div>
         <h2>About Me</h2>
         <p>I am a futuristic graphic designer focusing on branding, UI/UX, illustration and motion design.</p>
       </div>
-
     </div>
   </section>
 
@@ -103,15 +119,13 @@
   <section id="contact" class="section reveal">
     <div class="container contact-wrap">
       <h2>Contact</h2>
-
-      <form id="contactForm">
-        <input type="text" id="name" placeholder="Your Name" required />
-        <input type="email" id="email" placeholder="Your Email" required />
-        <textarea id="message" placeholder="Your Message" required></textarea>
+      <form id="contactForm" aria-label="Contact form">
+        <input type="text" id="name" name="from_name" placeholder="Your Name" required />
+        <input type="email" id="email" name="reply_to" placeholder="Your Email" required />
+        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
         <button type="submit" class="btn">Send Message</button>
       </form>
-
-      <p id="statusMsg"></p>
+      <p id="statusMsg" class="status-msg" aria-live="polite"></p>
     </div>
   </section>
 
@@ -120,7 +134,9 @@
     <div class="container footer-text">© 2025 Arajit Halder</div>
   </footer>
 
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+  <!-- App JS -->
   <script src="script.js"></script>
 </body>
 </html>
