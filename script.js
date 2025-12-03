@@ -254,10 +254,11 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
     }).then(function() {
         document.getElementById("statusMsg").innerHTML =
             "Message sent successfully! Check your inbox.";
-    })..catch(() => {
+    }).catch(() => {
             document.getElementById("statusMsg").innerHTML = "Failed to Send Message!";
         });
 });
+
 
 
 
