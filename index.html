@@ -15,7 +15,7 @@
 <body>
 
   <!-- Custom cursor -->
-  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor"></div>
 
   <!-- Header -->
   <header>
@@ -28,119 +28,99 @@
     </nav>
   </header>
 
-  <main>
-    <!-- HERO -->
-   <section id="home" class="hero">
-  <video class="hero-video" autoplay muted loop playsinline>
-    <source src="Graphics Designer.mp4" type="video/mp4">
-  </video>
-  <div class="hero-overlay"></div>
+  <!-- HERO SECTION -->
+  <section id="home" class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="Graphics Designer.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
 
-  <div class="hero-inner">
-    <p class="hello">Hello, I'm</p>
-    <h1 class="hero-title">Arajit Halder</h1>
-    <p class="subtitle">
-      <span id="typed-text" aria-live="polite"></span><span id="hero-caret">|</span>
-    </p>
-    <p class="hero-desc">I craft immersive, modern, and visually stunning designs for global brands.</p>
+    <div class="hero-inner">
+      <p class="hello">Hello, I'm</p>
+      <h1 class="hero-title">Arajit Halder</h1>
 
-    <div class="hero-actions">
-      <a class="btn" href="#portfolio">View Portfolio <i class="fa-regular fa-eye"></i></a>
+      <p class="subtitle">
+        <span id="typed-text"></span><span id="hero-caret">|</span>
+      </p>
+
+      <p class="hero-desc">I craft immersive, modern, and visually stunning designs for global brands.</p>
+
+      <a class="btn" href="#portfolio">View Portfolio</a>
+
+      <div class="socials">
+        <a href="https://facebook.com/arajit.halder.58" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/arajit.halder_official" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://linkedin.com/in/arajit-halder-8804a2205/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://wa.me/916295577953" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+
+      <!-- Scroll Arrow -->
+      <button id="scroll-arrow" class="scroll-arrow">
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
     </div>
+  </section>
 
-    <div class="socials">
-      <a href="https://facebook.com/arajit.halder.58" target="_blank"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://instagram.com/arajit.halder_official" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://linkedin.com/in/arajit-halder-8804a2205/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-      <a href="https://wa.me/916295577953" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="section reveal">
+    <div class="container">
+      <h2>Portfolio</h2>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="branding">Branding</button>
+        <button class="filter" data-filter="ui">UI</button>
+        <button class="filter" data-filter="illustration">Illustration</button>
+        <button class="filter" data-filter="motion">Motion</button>
+      </div>
+
+      <div class="grid" id="grid">
+        <article class="card" data-category="branding"><img src="Images/project1.jpg"><div class="card-meta"><h3>Brand A</h3></div></article>
+        <article class="card" data-category="ui"><img src="Images/project2.jpg"><div class="card-meta"><h3>App UI</h3></div></article>
+        <article class="card" data-category="illustration"><img src="Images/project3.jpg"><div class="card-meta"><h3>Illustration</h3></div></article>
+        <article class="card" data-category="motion"><img src="Images/project4.jpg"><div class="card-meta"><h3>Motion Reel</h3></div></article>
+        <article class="card" data-category="branding"><img src="Images/project5.jpg"><div class="card-meta"><h3>Brand B</h3></div></article>
+        <article class="card" data-category="ui"><img src="Images/project6.jpg"><div class="card-meta"><h3>UI Kit</h3></div></article>
+      </div>
     </div>
+  </section>
 
-    <!-- Scroll Arrow -->
-    <button id="scroll-arrow" class="scroll-arrow">
-      <i class="fa-solid fa-chevron-down"></i>
-    </button>
-  </div>
-</section>
+  <!-- ABOUT -->
+  <section id="about" class="section reveal">
+    <div class="container about-box">
+      
+      <img src="Images/User.png" class="about-img" alt="Arajit Halder">
 
-    <!-- PORTFOLIO -->
-    <section id="portfolio" class="section reveal" aria-label="Portfolio">
-      <div class="container">
-        <h2>Portfolio</h2>
-
-        <div class="filters" role="tablist" aria-label="Portfolio categories">
-          <button class="filter active" data-filter="all">All</button>
-          <button class="filter" data-filter="branding">Branding</button>
-          <button class="filter" data-filter="ui">UI</button>
-          <button class="filter" data-filter="illustration">Illustration</button>
-          <button class="filter" data-filter="motion">Motion</button>
-        </div>
-
-        <div id="grid" class="grid" aria-live="polite">
-          <!-- Replace the images and titles with your projects -->
-          <article class="card" data-category="branding" tabindex="0">
-            <img src="Images/project1.jpg" alt="Brand Project 1">
-            <div class="card-meta"><h3>Brand A</h3><p>Branding</p></div>
-          </article>
-
-          <article class="card" data-category="ui" tabindex="0">
-            <img src="Images/project2.jpg" alt="UI Project 1">
-            <div class="card-meta"><h3>App UI</h3><p>UI</p></div>
-          </article>
-
-          <article class="card" data-category="illustration" tabindex="0">
-            <img src="Images/project3.jpg" alt="Illustration">
-            <div class="card-meta"><h3>Illustration</h3><p>Illustration</p></div>
-          </article>
-
-          <article class="card" data-category="motion" tabindex="0">
-            <img src="Images/project4.jpg" alt="Motion Project">
-            <div class="card-meta"><h3>Motion Reel</h3><p>Motion</p></div>
-          </article>
-
-          <article class="card" data-category="branding" tabindex="0">
-            <img src="Images/project5.jpg" alt="Brand B">
-            <div class="card-meta"><h3>Brand B</h3><p>Branding</p></div>
-          </article>
-
-          <article class="card" data-category="ui" tabindex="0">
-            <img src="Images/project6.jpg" alt="UI Kit">
-            <div class="card-meta"><h3>UI Kit</h3><p>UI</p></div>
-          </article>
-        </div>
+      <div>
+        <h2>About Me</h2>
+        <p>I am a futuristic graphic designer focusing on branding, UI/UX, illustration and motion design.</p>
       </div>
-    </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section reveal">
-      <div class="container">
-        <h2>About</h2>
-        <p>Futuristic graphic designer focusing on brand identities, UI/UX and motion design.</p>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="section reveal">
-      <div class="container contact-wrap">
-        <h2>Contact</h2>
-        <form id="contactForm">
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="email" id="email" placeholder="Your Email" required />
-    <textarea id="message" placeholder="Your Message" required></textarea>
-    <button type="submit">Send Message</button>
-</form>
+  <!-- CONTACT -->
+  <section id="contact" class="section reveal">
+    <div class="container contact-wrap">
+      <h2>Contact</h2>
 
-<p id="statusMsg"></p>
-      </div>
-    </section>
-  </main>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
 
-  <footer><div class="container">© 2025 Arajit Halder</div></footer>
+      <p id="statusMsg"></p>
+    </div>
+  </section>
 
-  <!-- EmailJS (provided keys) -->
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-text">© 2025 Arajit Halder</div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
-  <!-- App JS -->
   <script src="script.js"></script>
 </body>
 </html>
-
-

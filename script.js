@@ -1,205 +1,170 @@
-/* tiny helpers */
-const $ = sel => document.querySelector(sel);
-const $$ = sel => Array.from(document.querySelectorAll(sel));
+/* Helper shortcuts */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
 
-/* EmailJS init (your public key from earlier) */
-(function(){ emailjs.init('jx3isFO17H8uIbius'); })();
+/* Init EmailJS */
+emailjs.init("jx3isFO17H8uIbius");
 
-/* Custom cursor */
-const cursor = $('#cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
+/* ----------------------------
+   CUSTOM CURSOR
+---------------------------- */
+const cursor = $("#cursor");
+document.addEventListener("mousemove", e => {
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top  = e.clientY + "px";
 });
-const interactives = ['a','button','.card','.btn','.filter'];
-function setHoverState(on){
-  if(on){ cursor.style.transform = 'translate(-50%,-50%) scale(1.9)'; cursor.style.background = 'rgba(0,232,255,0.12)'; }
-  else   { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.background = 'transparent'; }
+
+/* ----------------------------
+   CONTINUOUS TYPING EFFECT
+---------------------------- */
+const typed = $("#typed-text");
+const caret = $("#hero-caret");
+const hero = $("#home");
+
+const lines = [
+  "Futuristic Graphic Designer",
+  "UI/UX Specialist",
+  "Brand Identity Expert",
+  "Motion Designer"
+];
+
+let li = 0, ci = 0, del = false;
+
+function typing() {
+  const word = lines[li];
+  typed.textContent = del ? word.substring(0, --ci) : word.substring(0, ++ci);
+
+  if (!del && ci === word.length) { del = true; setTimeout(typing, 1000); return; }
+  if (del && ci === 0) { del = false; li = (li + 1) % lines.length; }
+
+  setTimeout(typing, del ? 40 : 110);
 }
-$$('[data-skip-hover]').forEach(n=>n.setAttribute('data-skip-hover','true')); // no-op default
-interactives.forEach(selector=>{
-  $$(selector).forEach(el=>{
-    el.addEventListener('mouseenter', ()=> setHoverState(true));
-    el.addEventListener('mouseleave', ()=> setHoverState(false));
-  });
+typing();
+
+/* caret visible only in hero */
+new IntersectionObserver(entries => {
+  entries.forEach(e => caret.style.opacity = e.isIntersecting ? "1" : "0");
+},{threshold:0.4}).observe(hero);
+
+/* ----------------------------
+   SCROLL ARROW
+---------------------------- */
+const arrow = $("#scroll-arrow");
+const nextSection = $("#portfolio");
+
+arrow.addEventListener("click", () => {
+  nextSection.scrollIntoView({ behavior: "smooth" });
+  arrow.classList.remove("show-arrow");
+  arrow.classList.add("hide-arrow");
 });
 
-/* Typing effect (hero only while in view) */
-const hero = $('#home');
-const typed = $('#typed-text');
-const caret = $('#hero-caret');
-const words = ['Futuristic Graphic Designer','UI/UX Specialist','Brand Identity Expert'];
-let wi = 0, ci = 0;
-let typingTimer = null;
+/* Show/hide arrow based on hero visibility */
+function updateArrow() {
+  const rect = hero.getBoundingClientRect();
+  if (rect.bottom > window.innerHeight * 0.5) {
+    arrow.classList.add("show-arrow");
+    arrow.classList.remove("hide-arrow");
+  } else {
+    arrow.classList.add("hide-arrow");
+    arrow.classList.remove("show-arrow");
+  }
+}
+window.addEventListener("scroll", updateArrow);
+updateArrow();
 
-const heroObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      caret.style.opacity = '1';
-      // start typing if not started
-      if(!typingTimer && typed.textContent === '') {
-        typingTimer = setTimeout(typeChar, 300);
-      }
-    } else {
-      caret.style.opacity = '0';
-      // pause typing by clearing timers
-      clearTimeout(typingTimer);
-      typingTimer = null;
+/* ----------------------------
+   3D Reveal Sections
+---------------------------- */
+const reveals = $$(".reveal");
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("active");
+      obs.unobserve(e.target);
     }
   });
-},{threshold:0.25});
-heroObserver.observe(hero);
+},{ threshold:0.2 });
+reveals.forEach(r => obs.observe(r));
 
-function typeChar(){
-  if(ci < words[wi].length){
-    typed.textContent += words[wi].charAt(ci++);
-    typingTimer = setTimeout(typeChar, 80);
-  } else {
-    typingTimer = setTimeout(eraseChar, 1100);
-  }
-}
-function eraseChar(){
-  if(ci > 0){
-    typed.textContent = words[wi].substring(0, ci-1);
-    ci--;
-    typingTimer = setTimeout(eraseChar, 40);
-  } else {
-    wi = (wi + 1) % words.length;
-    typingTimer = setTimeout(typeChar, 300);
-  }
-}
-
-/* Scroll arrow -> portfolio */
-document.addEventListener("DOMContentLoaded", function () {
-
-  /* -------------------- Scroll Arrow -------------------- */
-  const arrow = document.getElementById("scroll-arrow");
-  const nextSection = document.querySelector("#portfolio");
-
-  arrow.addEventListener("click", () => {
-      nextSection.scrollIntoView({ behavior: "smooth" });
-  });
-
-  /* -------------------- Typing Animation -------------------- */
-  const typedText = document.getElementById("typed-text");
-  const texts = ["A Creative Designer", "UI/UX Specialist", "Brand Identity Expert", "Motion Designer"];
-  let textIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-
-  function type() {
-      let current = texts[textIndex];
-      let displayed = isDeleting ? current.substring(0, charIndex--) : current.substring(0, charIndex++);
-      typedText.textContent = displayed;
-
-      if (!isDeleting && charIndex === current.length + 1) {
-          isDeleting = true;
-          setTimeout(type, 1000); // pause before deleting
-      } else if (isDeleting && charIndex === -1) {
-          isDeleting = false;
-          textIndex = (textIndex + 1) % texts.length;
-          setTimeout(type, 500);
-      } else {
-          setTimeout(type, isDeleting ? 50 : 100);
-      }
-  }
-
-  type(); // start typing
-
-});
-
-
-/* 3D reveal using IntersectionObserver */
-const reveals = $$('.reveal');
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(ent => {
-    if(ent.isIntersecting){ ent.target.classList.add('active'); revealObserver.unobserve(ent.target); }
-  });
-},{threshold:0.18});
-reveals.forEach(el => revealObserver.observe(el));
-
-/* Portfolio filtering */
-const filters = $$('.filter');
+/* ----------------------------
+   Filter Portfolio
+---------------------------- */
+const filters = $$(".filter");
 filters.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filters.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.filter;
-    $$('.card').forEach(card => {
-      if(f === 'all' || card.dataset.category === f) card.style.display = 'block';
-      else card.style.display = 'none';
+  btn.addEventListener("click", () => {
+    filters.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const type = btn.dataset.filter;
+
+    $$(".card").forEach(card => {
+      card.style.display = (type==="all" || card.dataset.category===type) ? "block" : "none";
     });
   });
 });
 
-/* Lightbox (click card to open) */
+/* ----------------------------
+   Lightbox
+---------------------------- */
 let lb = null;
-function openLightbox(src, alt){
-  if(lb) return;
-  lb = document.createElement('div');
-  lb.className = 'lightbox';
-  lb.innerHTML = `<button class="lb-close" aria-label="Close">&times;</button><img src="${src}" alt="${alt}">`;
+
+function openLB(src) {
+  if (lb) return;
+  lb = document.createElement("div");
+  lb.className = "lightbox";
+  lb.innerHTML = `<button class="lb-close">&times;</button><img src="${src}">`;
   document.body.appendChild(lb);
-  document.body.style.overflow = 'hidden';
-  lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
-  lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
-  document.addEventListener('keydown', onKey);
+  document.body.style.overflow = "hidden";
+
+  lb.querySelector(".lb-close").onclick = closeLB;
+  lb.onclick = e => { if (e.target === lb) closeLB(); };
 }
-function closeLightbox(){
-  if(!lb) return;
+function closeLB() {
   lb.remove();
   lb = null;
-  document.body.style.overflow = '';
-  document.removeEventListener('keydown', onKey);
+  document.body.style.overflow = "";
 }
-function onKey(e){ if(e.key === 'Escape') closeLightbox(); }
-$$('.card').forEach(card => {
-  card.addEventListener('click', () => {
-    const img = card.querySelector('img');
-    openLightbox(img.src, img.alt || '');
-  });
-  card.addEventListener('keydown', e => { if(e.key === 'Enter') card.click(); });
+
+$$(".card img").forEach(img => {
+  img.onclick = () => openLB(img.src);
 });
 
-/* Smooth anchor scrolling for header links */
+/* ----------------------------
+   Smooth Anchor Scrolling
+---------------------------- */
 $$('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const href = a.getAttribute('href');
-    if(href.length > 1){
+  a.onclick = e => {
+    const id = a.getAttribute("href");
+    if (id !== "#") {
       e.preventDefault();
-      const target = document.querySelector(href);
-      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      $(id).scrollIntoView({ behavior: "smooth" });
     }
-  });
+  };
 });
 
-/* EmailJS contact */
-(function(){
-    emailjs.init("jx3isFO17H8uIbius"); 
-})();
+/* ----------------------------
+   CONTACT FORM + AUTO REPLY
+---------------------------- */
+const form = $("#contactForm");
+const statusMsg = $("#statusMsg");
 
-document.getElementById("contactForm").addEventListener("submit", function(e){
-    e.preventDefault();
+form.addEventListener("submit", e => {
+  e.preventDefault();
 
-    const params = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
-    };
+  const params = {
+    from_name: $("#name").value.trim(),
+    reply_to: $("#email").value.trim(),
+    message: $("#message").value.trim()
+  };
 
-    // 1️⃣ Send Email to YOU
-    emailjs.send("service_d34z2l8", "template_mcod6qm", params)
-    .then(function() {
+  statusMsg.textContent = "Sending...";
 
-        // 2️⃣ Auto reply email to visitor
-        return emailjs.send("service_d34z2l8", "template_p0u4mwf", params);
-
-    }).then(function() {
-        document.getElementById("statusMsg").innerHTML =
-            "Message sent successfully! Check your inbox.";
-    }).catch(function(error){
-        console.error("Error:", error);
-        document.getElementById("statusMsg").innerHTML =
-            "Something went wrong. Please try again.";
-    });
+  emailjs.send("service_d34z2l8", "template_mcod6qm", params)
+  .then(() => emailjs.send("service_d34z2l8", "template_p0u4mwf", params))
+  .then(() => {
+    statusMsg.textContent = "Message sent successfully!";
+    form.reset();   // <<< AUTO CLEAR FIXED
+    setTimeout(()=> statusMsg.textContent = "", 3000);
+  })
+  .catch(() => statusMsg.textContent = "Failed to send message.");
 });
