@@ -12,33 +12,52 @@ if (window.emailjs && typeof emailjs.init === 'function') {
 }
 
 /* ---------- custom cursor (small) ---------- */
-const cursor = $('#cursor');
-if (cursor) {
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top  = e.clientY + 'px';
-  });
-  // hover growth
-  const interactives = ['a','button','.card','.btn','.filter'];
-  interactives.forEach(sel => {
-    $$(sel).forEach(el=>{
-      el.addEventListener('mouseenter', ()=> { cursor.style.transform = 'translate(-50%,-50%) scale(1.8)'; cursor.style.background = 'rgba(0,232,255,0.12)'; });
-      el.addEventListener('mouseleave', ()=> { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.background = 'transparent'; });
-    });
-  });
+const cursor = document.getElementById("cursor");
+
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+let cursorX = mouseX;
+let cursorY = mouseY;
+
+// Smooth trailing speed
+const smoothness = 0.12;
+
+// Track mouse
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Perfectly smooth lerp animation
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * smoothness;
+  cursorY += (mouseY - cursorY) * smoothness;
+
+  cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+
+  requestAnimationFrame(animateCursor);
 }
+animateCursor();
+
+/* Hover effect */
+const hoverTargets = "a, button, .btn, .card, .filter";
+
+document.querySelectorAll(hoverTargets).forEach((el) => {
+  el.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
+  el.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
+});
 
 /* ==========================
    Typing — continuous loop
-   - caret visibility controlled via IO (hero)
    ========================== */
 const typedEl = $('#typed-text');
 const caretEl  = $('#hero-caret');
 const typingWords = [
-  "Futuristic Graphic Designer",
-  "UI/UX Specialist",
-  "Brand Identity Expert",
-  "Motion Designer"
+  "Modern Graphic Designer",
+  "Brand Identity Specialist",
+  "UI Layout & Visual Designer",
+  "Motion & Promo Visuals"
 ];
 
 let wordIndex = 0, charIndex = 0, deleting = false;
@@ -72,9 +91,6 @@ if (caretEl && hero) {
 
 /* ==========================
    Scroll Arrow behavior
-   - visible when hero is mostly visible
-   - click -> scroll to portfolio -> hide arrow
-   - reappear when hero visible again
    ========================== */
 const scrollArrow = $('#scroll-arrow');
 const portfolio = $('#portfolio');
@@ -104,6 +120,7 @@ if (scrollArrow && portfolio && hero) {
   if (rect.bottom > window.innerHeight * 0.45) showArrow(); else hideArrow();
 }
 
+
 /* ==========================
    Floating hero title parallax
    ========================== */
@@ -117,7 +134,7 @@ if (floatTitle) {
 }
 
 /* ==========================
-   Portfolio filter + sliding underline + stagger reveal
+   Portfolio filter + underline + stagger reveal
    ========================== */
 const filters = $$('.filter');
 const underline = $('#filter-underline');
@@ -205,8 +222,15 @@ function openLightbox(src, alt='') {
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', escLB);
 }
-function closeLightbox(){ if (!lightbox) return; lightbox.remove(); lightbox = null; document.body.style.overflow = ''; document.removeEventListener('keydown', escLB); }
+function closeLightbox(){
+  if (!lightbox) return;
+  lightbox.remove();
+  lightbox = null;
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', escLB);
+}
 function escLB(e){ if (e.key === 'Escape') closeLightbox(); }
+
 $$('.card').forEach(card=>{
   card.addEventListener('click', ()=> {
     const img = card.querySelector('img');
@@ -215,7 +239,7 @@ $$('.card').forEach(card=>{
 });
 
 /* ==========================
-   Smooth anchor nav (closes nothing here)
+   Smooth anchor nav
    ========================== */
 $$('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
@@ -229,37 +253,186 @@ $$('a[href^="#"]').forEach(a=>{
 });
 
 /* ==========================
-   Contact form (EmailJS send + auto-reply) + auto-clear
+   Contact form (EmailJS send + auto-reply)
    ========================== */
-(function(){
-    emailjs.init("jx3isFO17H8uIbius"); 
-})();
+const contactForm = document.getElementById("contactForm");
+const statusMsg = document.getElementById("statusMsg");
 
-document.getElementById("contactForm").addEventListener("submit", function(e){
-    e.preventDefault();
+if (contactForm) {
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-    const params = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
-    };
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
 
-    // 1️⃣ Send Email to YOU
-    emailjs.send("service_d34z2l8", "template_mcod6qm", params)
-    .then(function() {
+    if (!name || !email || !message) {
+      statusMsg.textContent = "Please fill out all fields.";
+      return;
+    }
 
-        // 2️⃣ Auto reply email to visitor
-        return emailjs.send("service_d34z2l8", "template_p0u4mwf", params);
+    statusMsg.textContent = "Sending…";
 
-    }).then(function() {
-        document.getElementById("statusMsg").innerHTML =
-            "Message sent successfully! Check your inbox.";
-    }).catch(function(error){
-        console.error("Error:", error);
-        document.getElementById("statusMsg").innerHTML ="Something went wrong. Please try again.";
-    });
+    const params = {
+      from_name: name,
+      reply_to: email,
+      message: message
+    };
+
+    // ✔ Send to OWNER (template_mcod6qm)
+    emailjs
+      .send("service_d34z2l8", "template_mcod6qm", params)
+      .then(() => {
+        // ✔ Send AUTO REPLY to visitor (template_p0u4mwf)
+        return emailjs.send(
+          "service_d34z2l8",
+          "template_p0u4mwf",
+          params
+        );
+      })
+      .then(() => {
+        statusMsg.textContent = "Message sent! Check your email.";
+        contactForm.reset();
+        setTimeout(() => (statusMsg.textContent = ""), 5000);
+      })
+      .catch((err) => {
+        console.error("EmailJS Error:", err);
+        statusMsg.textContent = "Sending failed. Try again.";
+      });
+  });
+}
+
+
+/* ======================
+   Booking System (Calendar + Times)
+   ====================== */
+
+const timeSlotsContainer = document.getElementById("timeSlots");
+const bookingStatus = document.getElementById("bookingStatus");
+const confirmButton = document.getElementById("confirmBooking");
+let selectedTime = "";
+let selectedDate = "";
+
+const slots = [
+  "10:00 AM","11:00 AM","12:00 PM",
+  "2:00 PM","3:00 PM","4:00 PM",
+  "6:00 PM","8:00 PM"
+];
+
+// Generate Time Buttons
+slots.forEach(t => {
+  const btn = document.createElement("button");
+  btn.className = "time-slot";
+  btn.textContent = t;
+  
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".time-slot").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedTime = t;
+  });
+
+  timeSlotsContainer.appendChild(btn);
 });
 
+// Confirm Booking
+confirmButton.addEventListener("click", () => {
+  selectedDate = document.getElementById("bookingDate").value;
+
+  if (!selectedDate || !selectedTime) {
+    bookingStatus.textContent = "Please select a date and time.";
+    return;
+  }
+
+  bookingStatus.textContent = `Booking Confirmed for ${selectedDate} at ${selectedTime}.`;
+  bookingStatus.style.color = "var(--accent)";
+});
+
+
+/* ======================
+   Loader hide on window load
+   ====================== */
+const loader = $('#loader');
+window.addEventListener('load', () => {
+  if (!loader) return;
+  setTimeout(() => {
+    loader.classList.add('loader-hide');
+  }, 500);
+});
+
+
+
+/* ======================
+   Theme Switcher (Dark / Light)
+   ====================== */
+const themeToggleBtn = $('#themeToggle');
+const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+
+function applyTheme(theme){
+  document.body.dataset.theme = theme;
+  if (themeIcon){
+    themeIcon.className = theme === 'light'
+      ? 'fa-regular fa-sun'
+      : 'fa-regular fa-moon';
+  }
+}
+
+const savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
+
+themeToggleBtn && themeToggleBtn.addEventListener('click', () => {
+  const newTheme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('theme', newTheme);
+  applyTheme(newTheme);
+});
+
+
+/* ======================
+   Fullscreen Menu Toggle (mobile)
+   ====================== */
+const menuToggle = $('#menuToggle');
+const fullscreenMenu = $('#fullscreenMenu');
+
+if (menuToggle && fullscreenMenu){
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('open');
+    fullscreenMenu.classList.toggle('open');
+  });
+
+  // menu links close overlay
+  fullscreenMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      fullscreenMenu.classList.remove('open');
+      menuToggle.classList.remove('open');
+    });
+  });
+
+  // ESC close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape'){
+      fullscreenMenu.classList.remove('open');
+      menuToggle.classList.remove('open');
+    }
+  });
+}
+
+
+/* ======================
+   Sticky Side Navigation Active Glow
+   ====================== */
+const sections = ["home","portfolio","services","pricing","booking","contact"];
+const navDots = document.querySelectorAll(".side-nav a");
+
+window.addEventListener("scroll", () => {
+  let index = sections.length;
+
+  while(--index && window.scrollY + 200 < document.getElementById(sections[index]).offsetTop) {}
+
+  navDots.forEach(dot => dot.classList.remove("active"));
+  navDots[index].classList.add("active");
+});
+
+// initial active
+if (navDots[0]) navDots[0].classList.add("active");
 
 
 
