@@ -122,7 +122,9 @@ const heroObserver = new IntersectionObserver(
   { threshold: 0.55 }
 );
 
-heroObserver.observe(heroSection);/* ==========================
+heroObserver.observe(heroSection);
+
+/* ==========================
    Floating hero title parallax
    ========================== */
 const floatTitle = $('#float-title');
@@ -517,4 +519,69 @@ contactForm?.addEventListener("submit", () => {
       message: messageVal
     })
   });
+});
+
+
+/* ======================================================
+   MAGNETIC HOVER + TRAIL (Pro Version)
+   ====================================================== */
+
+function createMagnetEffect(targets, strength = 0.25, maxPull = 40) {
+  const elements = document.querySelectorAll(targets);
+
+  elements.forEach(el => {
+    let rect, centerX, centerY;
+
+    function updateCenter() {
+      rect = el.getBoundingClientRect();
+      centerX = rect.left + rect.width / 2;
+      centerY = rect.top + rect.height / 2;
+    }
+    updateCenter();
+    window.addEventListener("resize", updateCenter);
+
+    el.addEventListener("mousemove", (e) => {
+      const dx = (e.clientX - centerX);
+      const dy = (e.clientY - centerY);
+
+      const pullX = Math.max(Math.min(dx * strength, maxPull), -maxPull);
+      const pullY = Math.max(Math.min(dy * strength, maxPull), -maxPull);
+
+      el.style.transform =
+        `translate(${pullX}px, ${pullY}px) scale(1.03)`;
+    });
+
+    el.addEventListener("mouseleave", () => {
+      el.style.transform = `translate(0px, 0px) scale(1)`;
+    });
+  });
+}
+
+/* APPLY MAGNET TO ELEMENTS */
+createMagnetEffect(".card", 0.20, 32);
+createMagnetEffect(".service-card", 0.20, 28);
+createMagnetEffect(".price-card", 0.18, 25);
+createMagnetEffect(".blog-card", 0.25, 28);
+createMagnetEffect(".about-img-visual", 0.18, 20);   // FIXED ✔
+
+
+
+/* ======================================================
+   GLOW TRAIL (Global mouse follow)
+   ====================================================== */
+
+const bodyTrail = document.body;
+
+document.addEventListener("mousemove", (e) => {
+  const dot = document.createElement("div");
+  dot.className = "glow-dot";
+  dot.style.position = "fixed";
+  dot.style.left = e.clientX + "px";
+  dot.style.top = e.clientY + "px";
+  dot.style.pointerEvents = "none";
+  dot.style.zIndex = 9999;
+
+  bodyTrail.appendChild(dot);
+
+  setTimeout(() => dot.remove(), 900);
 });

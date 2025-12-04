@@ -313,59 +313,147 @@ h2{
 
 /* ABOUT SECTION FIXED */
 
+/* ABOUT — Fix + Glow + Magnet + Shine */
+
 .about-box {
   display: flex;
   align-items: center;
   gap: 40px;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
 }
 
-.about-img-wrap {
+/* Wrapper (no 3D) */
+.about-img-visual {
   width: 220px;
   height: 220px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid var(--accent);
-  box-shadow: 0 0 25px rgba(0, 234, 255, 0.4);
+  position: relative;
   flex-shrink: 0;
+  margin: auto;
 }
 
+/* Image container */
+.about-img-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+  border: 4px solid var(--accent);
+  box-shadow: 0 0 25px rgba(0,234,255,0.35);
+}
+
+/* Actual photo */
 .about-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
   display: block;
+  transition: transform .35s ease;
 }
 
-.about-content {
-  max-width: 600px;
+.about-img-visual:hover .about-img {
+  transform: scale(1.06);
 }
 
-.about-text {
-  margin: 12px 0 20px;
-  font-size: 14px;
-  opacity: .9;
+/* -----------------------------------------
+   1. Premium Diagonal Shine
+----------------------------------------- */
+.about-shine {
+  position: absolute;
+  top: -120%;
+  left: -140%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    130deg,
+    transparent 0%,
+    rgba(255,255,255,0.10) 40%,
+    rgba(255,255,255,0.45) 50%,
+    rgba(255,255,255,0.10) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform: translateX(-180%) rotate(25deg);
+  transition: transform 1s ease, opacity .5s ease;
+  opacity: 0;
+  z-index: 20;
 }
 
-.about-highlights {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+.about-img-visual:hover .about-shine {
+  transform: translateX(160%) rotate(25deg);
+  opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .about-box {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .about-highlights {
-    grid-template-columns: 1fr;
-  }
+/* -----------------------------------------
+   2. Soft Curved Highlight (glass look)
+----------------------------------------- */
+.about-reflect {
+  position: absolute;
+  width: 160%;
+  height: 70%;
+  top: -20%;
+  left: -30%;
+  background: radial-gradient(circle at top,
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.05),
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(15px);
+  pointer-events: none;
+  transition: opacity .4s ease;
+  opacity: 0.28;
+  z-index: 15;
 }
 
+.about-img-visual:hover .about-reflect {
+  opacity: 0.38;
+}
+
+/* -----------------------------------------
+   3. Rotating Neon Glow Ring
+----------------------------------------- */
+.about-glow-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,234,255,0.45);
+  filter: blur(6px);
+  pointer-events: none;
+  animation: ringRotate 6s linear infinite;
+  z-index: 1;
+}
+
+@keyframes ringRotate {
+  0% { transform: rotate(0deg); opacity: .55; }
+  50% { opacity: .8; }
+  100% { transform: rotate(360deg); opacity: .55; }
+}
+
+/* -----------------------------------------
+   4. Ambient Glow Pulse
+----------------------------------------- */
+.about-ambient {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0,234,255,.28),
+    transparent 70%
+  );
+  filter: blur(30px);
+  pointer-events: none;
+  animation: ambientPulse 4s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes ambientPulse {
+  0%,100% { opacity:.4; transform: scale(1); }
+  50%     { opacity:.75; transform: scale(1.08); }
+}
 /* contact */
 .contact-wrap{
   max-width:760px;
@@ -459,11 +547,46 @@ footer{
   .card img{height:200px}
 }
 @media(max-width:800px){
-  .about-box{
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-  }
+  .about-box {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.about-img-visual {
+  width: 220px;
+  height: 220px;
+  margin: auto;
+  position: relative;
+  flex-shrink: 0;
+}
+.about-shine {
+  position: absolute;
+  top: -120%;
+  left: -120%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    130deg,
+    transparent 0%,
+    rgba(255,255,255,0.10) 40%,
+    rgba(255,255,255,0.45) 50%,
+    rgba(255,255,255,0.10) 60%,
+    transparent 100%
+  );
+  transform: translateX(-180%) rotate(25deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 1s ease, opacity .5s ease;
+}
+
+.about-img-visual:hover .about-shine {
+  transform: translateX(160%) rotate(25deg);
+  opacity: 1;
+}
+
   .about-highlights{
     grid-template-columns:1fr;
     text-align:left;
