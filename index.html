@@ -6,7 +6,8 @@
   <title>Arajit Halder — Portfolio</title>
 
   <!-- Fonts & icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +17,10 @@
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
+
 
   <!-- Loading Screen -->
   <div id="loader">
@@ -171,25 +175,21 @@
   <div class="container about-box">
 
     <!-- PREMIUM REFLECTION PACK IMAGE -->
-    <div class="about-img-visual">
+    <div class="about-img-visual about-img-outer">
 
-      <!-- Glow Ring -->
-      <div class="about-glow-ring"></div>
+  <div class="face-ai-light"></div>
+  <div class="face-bounce"></div>
 
-      <!-- Ambient Glow -->
-      <div class="about-ambient"></div>
+  <div class="about-img-inner">
+      <div class="about-shine"></div>
+      <div class="about-reflect"></div>
+      <img src="Images/User.png" class="about-img" alt="Arajit Halder">
+  </div>
 
-      <div class="about-img-inner">
+  <div class="about-glow-ring"></div>
+  <div class="about-ambient"></div>
 
-        <!-- Shine Reflection Streak -->
-        <div class="about-shine"></div>
-
-        <!-- Soft Curved Highlight -->
-        <div class="about-reflect"></div>
-
-        <img src="Images/User.png" class="about-img" alt="Arajit Halder">
-      </div>
-    </div>
+</div>
 
     <!-- TEXT CONTENT -->
     <div class="about-content">
@@ -454,5 +454,39 @@
   <!-- App JS -->
   <script src="script.js" defer></script>
 
+<!-- ==============================
+     AI CHATBOT WIDGET
+=============================== -->
+<div id="chatbot-button">
+  <i class="fa-solid fa-robot"></i>
+</div>
+
+<div id="chatbot-box">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">
+      <img src="Images/Logo.png" alt="Bot">
+      <span class="bot-glow"></span>
+    </div>
+    <span>Arajit AI Assistant</span>
+    <button id="chatbot-close">&times;</button>
+  </div>
+
+  <div class="chatbot-body" id="chatbot-body"></div>
+
+  <div class="chatbot-suggestions">
+    <button class="suggest-btn">Show Portfolio</button>
+    <button class="suggest-btn">Pricing</button>
+    <button class="suggest-btn">Book a Session</button>
+  </div>
+
+  <div class="chatbot-input">
+    <button id="chatbot-mic"><i class="fa-solid fa-microphone"></i></button>
+    <input type="text" id="chatbot-text" placeholder="Ask anything..." />
+    <button id="chatbot-send"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+
+  <div class="chatbot-footer">Powered by Arajit — AI 2025</div>
+</div>
 </body>
+
 </html>

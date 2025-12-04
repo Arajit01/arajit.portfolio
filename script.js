@@ -1,6 +1,68 @@
-/* ===========================
-   script.js — Premium, modular, final
-   =========================== */
+/* ======================================================
+   PORTRAIT-AWARE REFLECT + FACE LIGHT ENGINE
+   ====================================================== */
+
+const aboutImgWrap = document.querySelector(".about-img-visual");
+if (aboutImgWrap) {
+  
+  // Create elements dynamically so no HTML edit needed
+  let aiLight = document.querySelector(".face-ai-light");
+  let skinBounce = document.querySelector(".face-bounce");
+
+  if (!aiLight) {
+    aiLight = document.createElement("div");
+    aiLight.className = "face-ai-light";
+    aboutImgWrap.appendChild(aiLight);
+  }
+
+  if (!skinBounce) {
+    skinBounce = document.createElement("div");
+    skinBounce.className = "face-bounce";
+    aboutImgWrap.appendChild(skinBounce);
+  }
+
+  let wrapRect = null;
+
+  function updateRect() {
+    wrapRect = aboutImgWrap.getBoundingClientRect();
+  }
+  updateRect();
+  window.addEventListener("resize", updateRect);
+
+  aboutImgWrap.addEventListener("mousemove", (e) => {
+    const x = e.clientX - wrapRect.left;
+    const y = e.clientY - wrapRect.top;
+
+    const percentX = (x / wrapRect.width - 0.5) * 2;   // -1 to 1
+    const percentY = (y / wrapRect.height - 0.5) * 2;
+
+    // AI cool blue light → directly follows cursor
+    aiLight.style.opacity = 1;
+    aiLight.style.left = `${x}px`;
+    aiLight.style.top = `${y}px`;
+
+    // Distance from center for "skin bounce"
+    const dist = Math.sqrt(percentX * percentX + percentY * percentY);
+
+    if (dist < 0.35) {
+      skinBounce.dataset.bounce = "strong";
+    } else if (dist < 0.65) {
+      skinBounce.dataset.bounce = "medium";
+    } else {
+      skinBounce.dataset.bounce = "soft";
+    }
+
+    skinBounce.style.opacity = 1;
+    skinBounce.style.left = `${x}px`;
+    skinBounce.style.top = `${y}px`;
+  });
+
+  aboutImgWrap.addEventListener("mouseleave", () => {
+    aiLight.style.opacity = 0;
+    skinBounce.style.opacity = 0;
+  });
+}
+
 
 /* ---------- helpers ---------- */
 const $  = sel => document.querySelector(sel);
@@ -585,3 +647,140 @@ document.addEventListener("mousemove", (e) => {
 
   setTimeout(() => dot.remove(), 900);
 });
+
+
+
+/* ==============================
+   CHATBOT LOGIC
+=============================== */
+
+const botBtn = $("#chatbot-button");
+const botBox = $("#chatbot-box");
+const botClose = $("#chatbot-close");
+const botBody = $("#chatbot-body");
+const botInput = $("#chatbot-text");
+const botSend = $("#chatbot-send");
+const botMic = $("#chatbot-mic");
+
+let conversationMemory = [];
+
+// Open/Close
+botBtn.onclick = () => botBox.classList.add("open");
+botClose.onclick = () => botBox.classList.remove("open");
+
+function autoScroll() {
+  botBody.scrollTop = botBody.scrollHeight;
+}
+
+function addUserMessage(text){
+  const msg = document.createElement("div");
+  msg.className = "user-msg";
+  msg.innerText = text;
+  botBody.appendChild(msg);
+  autoScroll();
+}
+
+function addTyping(){
+  const wrap = document.createElement("div");
+  wrap.className = "bot-msg";
+  wrap.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
+  botBody.appendChild(wrap);
+  autoScroll();
+  return wrap;
+}
+
+function botReply(text){
+  const msg = document.createElement("div");
+  msg.className = "bot-msg";
+  msg.innerText = text;
+  botBody.appendChild(msg);
+
+  // Speak response
+  speak(text);
+
+  autoScroll();
+}
+
+/* === TEXT-TO-SPEECH === */
+function speak(text){
+  if("speechSynthesis" in window){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.pitch = 1.1;
+    utter.rate = 1;
+    utter.volume = 1;
+    utter.voice = speechSynthesis.getVoices()[2];
+    speechSynthesis.speak(utter);
+  }
+}
+
+/* === VOICE RECOGNITION === */
+if("webkitSpeechRecognition" in window){
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+
+  botMic.onclick = () => {
+    recognition.start();
+    botMic.style.background = "var(--accent)";
+  };
+
+  recognition.onresult = function(e){
+    const text = e.results[0][0].transcript;
+    botMic.style.background = "";
+    botInput.value = text;
+    sendMessage();
+  };
+}
+
+/* === SMART AI REPLY ENGINE (local GPT-like) === */
+function generateAIResponse(msg){
+  msg = msg.toLowerCase();
+
+  if(msg.includes("logo")) return "Logo design starts from ₹999 and includes 2–3 concepts.";
+  if(msg.includes("price") || msg.includes("cost")) return "Pricing: Starter ₹999, Professional ₹2499, Premium ₹4999.";
+  if(msg.includes("portfolio")) return "Check the Portfolio section to see my latest works.";
+  if(msg.includes("book") || msg.includes("session")) return "Choose a plan under Pricing to book your session.";
+  if(msg.includes("time") || msg.includes("available")) return "Available time slots are visible in the Booking section.";
+  if(msg.includes("contact") || msg.includes("message")) return "Use the Contact form — I reply instantly!";
+  
+  // GPT-like fallback
+  return "That's interesting! Tell me more. 😊";
+}
+
+/* === SEND MESSAGE === */
+botSend.onclick = sendMessage;
+botInput.addEventListener("keypress", e=>{
+  if(e.key === "Enter") sendMessage();
+});
+
+function sendMessage(){
+  let text = botInput.value.trim();
+  if(!text) return;
+
+  addUserMessage(text);
+  botInput.value = "";
+
+  conversationMemory.push(text);
+  if(conversationMemory.length > 6) conversationMemory.shift();
+
+  const typing = addTyping();
+
+  setTimeout(()=>{
+    typing.remove();
+
+    const reply = generateAIResponse(text);
+    botReply(reply);
+
+  }, 900);
+}
+
+/* === Suggestion Buttons === */
+$$(".suggest-btn").forEach(btn=>{
+  btn.onclick = ()=>{
+    botInput.value = btn.innerText;
+    sendMessage();
+  };
+});
+
+
+
