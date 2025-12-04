@@ -654,133 +654,127 @@ document.addEventListener("mousemove", (e) => {
    CHATBOT LOGIC
 =============================== */
 
-const botBtn = $("#chatbot-button");
-const botBox = $("#chatbot-box");
-const botClose = $("#chatbot-close");
-const botBody = $("#chatbot-body");
-const botInput = $("#chatbot-text");
-const botSend = $("#chatbot-send");
-const botMic = $("#chatbot-mic");
+const CHATBOT_API = "YOUR_GOOGLE_SCRIPT_WEBAPP_URL";  // <--- replace
 
-let conversationMemory = [];
+let chatMemory = [];
+const chatBox = document.getElementById("chatbot-box");
+const chatBody = document.getElementById("chatbot-body");
+const chatInput = document.getElementById("chatbot-text");
+const chatSend = document.getElementById("chatbot-send");
+const chatMic = document.getElementById("chatbot-mic");
 
-// Open/Close
-botBtn.onclick = () => botBox.classList.add("open");
-botClose.onclick = () => botBox.classList.remove("open");
+/* SHOW/HIDE Chatbot */
+document.getElementById("chatbot-button").onclick = () => {
+  chatBox.classList.add("open");
+};
+document.getElementById("chatbot-close").onclick = () => {
+  chatBox.classList.remove("open");
+};
 
-function autoScroll() {
-  botBody.scrollTop = botBody.scrollHeight;
+/* Add messages */
+function addUser(msg) {
+  chatBody.innerHTML += `<div class="user-msg">${msg}</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function addBot(msg) {
+  chatBody.innerHTML += `<div class="bot-msg">${msg}</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  speakText(msg);  // AI voice reply
 }
 
-function addUserMessage(text){
-  const msg = document.createElement("div");
-  msg.className = "user-msg";
-  msg.innerText = text;
-  botBody.appendChild(msg);
-  autoScroll();
+/* Thinking Animation */
+function showThinking() {
+  const t = document.createElement("div");
+  t.className = "bot-msg typing";
+  t.innerHTML = `<span></span><span></span><span></span>`;
+  chatBody.appendChild(t);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return t;
 }
 
-function addTyping(){
-  const wrap = document.createElement("div");
-  wrap.className = "bot-msg";
-  wrap.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
-  botBody.appendChild(wrap);
-  autoScroll();
-  return wrap;
+/* Send to backend */
+async function askAI(msg) {
+  const thinking = showThinking();
+
+  const res = await fetch(CHATBOT_API, {
+    method: "POST",
+    body: JSON.stringify({
+      message: msg,
+      memory: chatMemory
+    })
+  });
+
+  const data = await res.json();
+  thinking.remove();
+
+  const reply = data.reply || "AI error.";
+  addBot(reply);
+
+  chatMemory.push(msg);
+  chatMemory.push(reply);
+
+  if (chatMemory.length > 10) chatMemory.shift();
 }
 
-function botReply(text){
-  const msg = document.createElement("div");
-  msg.className = "bot-msg";
-  msg.innerText = text;
-  botBody.appendChild(msg);
+/* Send message handler */
+chatSend.onclick = sendMessage;
+chatInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") sendMessage();
+});
 
-  // Speak response
-  speak(text);
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
 
-  autoScroll();
+  addUser(text);
+  chatInput.value = "";
+  askAI(text);
 }
 
-/* === TEXT-TO-SPEECH === */
-function speak(text){
-  if("speechSynthesis" in window){
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.pitch = 1.1;
-    utter.rate = 1;
-    utter.volume = 1;
-    utter.voice = speechSynthesis.getVoices()[2];
-    speechSynthesis.speak(utter);
-  }
-}
+/* Auto-Suggestions */
+document.querySelectorAll(".suggest-btn").forEach(btn => {
+  btn.onclick = () => {
+    chatInput.value = btn.textContent;
+    sendMessage();
+  };
+});
 
-/* === VOICE RECOGNITION === */
-if("webkitSpeechRecognition" in window){
-  const recognition = new webkitSpeechRecognition();
+/* ==========================================
+   Voice Input — Speech to Text
+========================================== */
+let recognition;
+if ("webkitSpeechRecognition" in window) {
+  recognition = new webkitSpeechRecognition();
   recognition.lang = "en-US";
   recognition.interimResults = false;
 
-  botMic.onclick = () => {
+  chatMic.onclick = () => {
     recognition.start();
-    botMic.style.background = "var(--accent)";
+    chatMic.style.color = "#00eaff";
   };
 
-  recognition.onresult = function(e){
-    const text = e.results[0][0].transcript;
-    botMic.style.background = "";
-    botInput.value = text;
-    sendMessage();
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    chatInput.value = text;
+    chatMic.style.color = "";
+  };
+
+  recognition.onend = () => {
+    chatMic.style.color = "";
   };
 }
 
-/* === SMART AI REPLY ENGINE (local GPT-like) === */
-function generateAIResponse(msg){
-  msg = msg.toLowerCase();
-
-  if(msg.includes("logo")) return "Logo design starts from ₹999 and includes 2–3 concepts.";
-  if(msg.includes("price") || msg.includes("cost")) return "Pricing: Starter ₹999, Professional ₹2499, Premium ₹4999.";
-  if(msg.includes("portfolio")) return "Check the Portfolio section to see my latest works.";
-  if(msg.includes("book") || msg.includes("session")) return "Choose a plan under Pricing to book your session.";
-  if(msg.includes("time") || msg.includes("available")) return "Available time slots are visible in the Booking section.";
-  if(msg.includes("contact") || msg.includes("message")) return "Use the Contact form — I reply instantly!";
-  
-  // GPT-like fallback
-  return "That's interesting! Tell me more. 😊";
+/* ==========================================
+   Voice Output — AI speaks reply
+========================================== */
+function speakText(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  msg.pitch = 1.0;
+  msg.rate = 1.0;
+  speechSynthesis.speak(msg);
 }
-
-/* === SEND MESSAGE === */
-botSend.onclick = sendMessage;
-botInput.addEventListener("keypress", e=>{
-  if(e.key === "Enter") sendMessage();
-});
-
-function sendMessage(){
-  let text = botInput.value.trim();
-  if(!text) return;
-
-  addUserMessage(text);
-  botInput.value = "";
-
-  conversationMemory.push(text);
-  if(conversationMemory.length > 6) conversationMemory.shift();
-
-  const typing = addTyping();
-
-  setTimeout(()=>{
-    typing.remove();
-
-    const reply = generateAIResponse(text);
-    botReply(reply);
-
-  }, 900);
-}
-
-/* === Suggestion Buttons === */
-$$(".suggest-btn").forEach(btn=>{
-  btn.onclick = ()=>{
-    botInput.value = btn.innerText;
-    sendMessage();
-  };
-});
 
 
 
