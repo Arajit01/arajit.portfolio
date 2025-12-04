@@ -436,4 +436,61 @@ if (navDots[0]) navDots[0].classList.add("active");
 
 
 
+/* ---------------------------------------
+   GOOGLE SHEET WEBHOOK (Pricing + Booking + Contact)
+---------------------------------------- */
+const WEBHOOK_URL =
+"https://script.google.com/macros/s/AKfycbwqfHOLP1U7Dr7I9qYSAx6QGarJxAyhhgDOA4PkOLCRjr37TA8UyaNpHJ6LFf1zgA8C/exec";
+
+/* ---- Pricing Auto Save ---- */
+$$(".price-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const plan = btn.parentElement.querySelector("h3").innerText;
+
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ type: "pricing", plan })
+    });
+
+    alert(`Plan Selected: ${plan} (Saved to Google Sheet)`);
+  });
+});
+
+/* ---- Booking Auto Save ---- */
+$("#confirmBooking").addEventListener("click", () => {
+  const date = bookingDate.value;
+  if (!date || !selectedTime) {
+    bookingStatus.textContent = "Please select date & time.";
+    return;
+  }
+
+  fetch(WEBHOOK_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      type: "booking",
+      date,
+      time: selectedTime
+    })
+  });
+
+  bookingStatus.textContent = `Booking Confirmed ✔ (Saved to Google Sheet)`;
+});
+
+/* ---- Contact Auto Save ---- */
+contactForm?.addEventListener("submit", e => {
+  fetch(WEBHOOK_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      type: "contact",
+      name: $("#name").value,
+      email: $("#email").value,
+      message: $("#message").value
+    })
+  });
+});
+
+
 
