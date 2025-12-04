@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book a Session — Arajit Halder</title>
+
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Optional: light background using same theme -->
+  <div id="cursor"></div>
+
+  <header>
+    <div class="logo">
+      <img src="Images/Logo.png" alt="Logo" />
+    </div>
+    <nav class="main-nav">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="index.html" class="btn" style="font-size:12px;padding:8px 16px;">Back to Portfolio</a>
+    </div>
+  </header>
+
+  <section class="section booking-page">
+    <div class="container">
+      <div class="booking-wrap">
+        <h2>Book a Session</h2>
+        <p class="section-lead">
+          Fill in your details and pick a time that works best for you. You’ll receive a confirmation shortly.
+        </p>
+
+        <form id="bookingForm">
+          <input type="text" id="clientName" class="booking-input" placeholder="Your Name" required>
+          <input type="email" id="clientEmail" class="booking-input" placeholder="Your Email" required>
+          <input type="text" id="clientPlan" class="booking-input" placeholder="Selected Plan (optional)">
+          <input type="date" id="bookingDateFull" class="booking-input" required>
+
+          <div class="time-slots" id="bookingTimeSlots">
+            <!-- JS will generate time buttons -->
+          </div>
+
+          <button type="submit" class="btn" style="margin-top:20px;">Confirm Booking</button>
+        </form>
+
+        <p id="bookingStatusFull"></p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const WEBHOOK_URL =
+      "https://script.google.com/macros/s/AKfycbwqfHOLP1U7Dr7I9qYSAx6QGarJxAyhhgDOA4PkOLCRjr37TA8UyaNpHJ6LFf1zgA8C/exec";
+
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingStatusFull = document.getElementById('bookingStatusFull');
+    const timeSlotsBox = document.getElementById('bookingTimeSlots');
+
+    const slots = [
+      "10:00 AM","11:00 AM","12:00 PM",
+      "2:00 PM","3:00 PM","4:00 PM",
+      "6:00 PM","8:00 PM"
+    ];
+    let selectedTimeFull = "";
+
+    // auto-fill plan from URL if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const prePlan = urlParams.get('plan');
+    const clientPlanInput = document.getElementById('clientPlan');
+    if (prePlan && clientPlanInput) clientPlanInput.value = prePlan;
+
+    // generate glassy time buttons
+    slots.forEach(t => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot';
+      btn.textContent = t;
+
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedTimeFull = t;
+      });
+
+      timeSlotsBox.appendChild(btn);
+    });
+
+    bookingForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const name = document.getElementById('clientName').value.trim();
+      const email = document.getElementById('clientEmail').value.trim();
+      const plan = document.getElementById('clientPlan').value.trim();
+      const date = document.getElementById('bookingDateFull').value.trim();
+
+      if (!name || !email || !date || !selectedTimeFull) {
+        bookingStatusFull.textContent = "Please fill all fields and pick a time slot.";
+        return;
+      }
+
+      bookingStatusFull.textContent = "Submitting your booking…";
+
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          type: "booking",
+          name,
+          email,
+          plan,
+          date,
+          time: selectedTimeFull
+        })
+      }).then(() => {
+        bookingStatusFull.textContent = "Booking confirmed! Thank you.";
+        bookingForm.reset();
+        selectedTimeFull = "";
+        document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+        setTimeout(() => bookingStatusFull.textContent = "", 5000);
+      }).catch(() => {
+        bookingStatusFull.textContent = "Something went wrong. Please try again.";
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,58 +1,51 @@
 /* ===========================
-   script.js — Premium, modular
+   script.js — Premium, modular, final
    =========================== */
 
 /* ---------- helpers ---------- */
-const $ = sel => document.querySelector(sel);
+const $  = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
 
 /* ---------- EmailJS init (public key) ---------- */
 if (window.emailjs && typeof emailjs.init === 'function') {
-  try { emailjs.init('jx3isFO17H8uIbius'); } catch(e){ console.warn('EmailJS init failed', e); }
+  try { emailjs.init('jx3isFO17H8uIbius'); }
+  catch(e){ console.warn('EmailJS init failed', e); }
 }
 
 /* ---------- custom cursor (small) ---------- */
 const cursor = document.getElementById("cursor");
+if (cursor){
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let cursorX = mouseX;
+  let cursorY = mouseY;
+  const smoothness = 0.12;
 
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
 
-let cursorX = mouseX;
-let cursorY = mouseY;
+  function animateCursor() {
+    cursorX += (mouseX - cursorX) * smoothness;
+    cursorY += (mouseY - cursorY) * smoothness;
+    cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
 
-// Smooth trailing speed
-const smoothness = 0.12;
-
-// Track mouse
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-// Perfectly smooth lerp animation
-function animateCursor() {
-  cursorX += (mouseX - cursorX) * smoothness;
-  cursorY += (mouseY - cursorY) * smoothness;
-
-  cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
-
-  requestAnimationFrame(animateCursor);
+  const hoverTargets = "a, button, .btn, .card, .filter";
+  document.querySelectorAll(hoverTargets).forEach((el) => {
+    el.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
+    el.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
+  });
 }
-animateCursor();
-
-/* Hover effect */
-const hoverTargets = "a, button, .btn, .card, .filter";
-
-document.querySelectorAll(hoverTargets).forEach((el) => {
-  el.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
-  el.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
-});
 
 /* ==========================
    Typing — continuous loop
    ========================== */
 const typedEl = $('#typed-text');
-const caretEl  = $('#hero-caret');
+const caretEl = $('#hero-caret');
 const typingWords = [
   "Modern Graphic Designer",
   "Brand Identity Specialist",
@@ -62,16 +55,17 @@ const typingWords = [
 
 let wordIndex = 0, charIndex = 0, deleting = false;
 (function typingLoop(){
+  if (!typedEl) return;
   const w = typingWords[wordIndex];
   if (!deleting) {
-    typedEl && (typedEl.textContent = w.slice(0, ++charIndex));
+    typedEl.textContent = w.slice(0, ++charIndex);
     if (charIndex > w.length) {
       deleting = true;
       setTimeout(typingLoop, 1000);
       return;
     }
   } else {
-    typedEl && (typedEl.textContent = w.slice(0, --charIndex));
+    typedEl.textContent = w.slice(0, --charIndex);
     if (charIndex === 0) {
       deleting = false;
       wordIndex = (wordIndex + 1) % typingWords.length;
@@ -95,31 +89,28 @@ if (caretEl && hero) {
 const scrollArrow = $('#scroll-arrow');
 const portfolio = $('#portfolio');
 
-function showArrow(){ scrollArrow.classList.remove('hide'); scrollArrow.classList.add('show'); }
-function hideArrow(){ scrollArrow.classList.remove('show'); scrollArrow.classList.add('hide'); }
+function showArrow(){ scrollArrow && scrollArrow.classList.add('show'); }
+function hideArrow(){ scrollArrow && scrollArrow.classList.add('hide'); }
 
 if (scrollArrow && portfolio && hero) {
   // click scroll
   scrollArrow.addEventListener('click', ()=>{
     portfolio.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    hideArrow(); // hide immediately after click
   });
 
   // intersection to show/hide arrow depending on hero visibility
   const heroObserver = new IntersectionObserver(entries=>{
     entries.forEach(en=>{
-      if (en.isIntersecting && en.intersectionRatio > 0.45) showArrow();
+      if (en.isIntersecting && en.intersectionRatio > 0.25) showArrow();
       else hideArrow();
     });
   }, { threshold: [0, 0.25, 0.45, 0.6] });
 
   heroObserver.observe(hero);
 
-  // initial check (in case)
-  const rect = hero.getBoundingClientRect();
-  if (rect.bottom > window.innerHeight * 0.45) showArrow(); else hideArrow();
+  // force arrow visible on first load (hero on screen)
+  showArrow();
 }
-
 
 /* ==========================
    Floating hero title parallax
@@ -160,7 +151,6 @@ filters.forEach(btn=>{
     moveUnderlineTo(btn);
 
     const f = btn.dataset.filter;
-    // animate hide/show with stagger
     cards.forEach((card,i)=>{
       if (f === 'all' || card.dataset.category === f) {
         card.style.display = 'block';
@@ -176,23 +166,25 @@ filters.forEach(btn=>{
 });
 
 /* On first load, stagger reveal when portfolio enters view */
-const portfolioObserver = new IntersectionObserver((entries, obs)=>{
-  entries.forEach(entry=>{
-    if (entry.isIntersecting) {
-      cards.forEach((card,i)=>{
-        card.classList.add('hidden');
-        setTimeout(()=> {
-          card.style.display = 'block';
-          card.classList.remove('hidden');
-          card.classList.add('revealed');
-        }, i*120);
-      });
-      obs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.18 });
+if (portfolio){
+  const portfolioObserver = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(entry=>{
+      if (entry.isIntersecting) {
+        cards.forEach((card,i)=>{
+          card.classList.add('hidden');
+          setTimeout(()=> {
+            card.style.display = 'block';
+            card.classList.remove('hidden');
+            card.classList.add('revealed');
+          }, i*120);
+        });
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18 });
 
-if (portfolio) portfolioObserver.observe(portfolio);
+  portfolioObserver.observe(portfolio);
+}
 
 /* 3D tilt on card mousemove (subtle) */
 cards.forEach(card=>{
@@ -244,74 +236,96 @@ $$('.card').forEach(card=>{
 $$('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     const href = a.getAttribute('href');
-    if (href.length > 1) {
-      e.preventDefault();
+    if (href && href.length > 1) {
       const tgt = document.querySelector(href);
-      if (tgt) tgt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (tgt) {
+        e.preventDefault();
+        tgt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   });
 });
 
 /* ==========================
-   Contact form (EmailJS send + auto-reply)
+   Contact form (EmailJS send + auto-reply + auto-clear)
    ========================== */
+emailjs.init("jx3isFO17H8uIbius"); // Your Public Key
+
 const contactForm = document.getElementById("contactForm");
-const statusMsg = document.getElementById("statusMsg");
+const statusMsg   = document.getElementById("statusMsg");
 
 if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
+  contactForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
+    const name    = document.getElementById("name").value.trim();
+    const email   = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
 
+    // Simple validation
     if (!name || !email || !message) {
       statusMsg.textContent = "Please fill out all fields.";
+      statusMsg.style.color = "red";
       return;
     }
 
     statusMsg.textContent = "Sending…";
+    statusMsg.style.color = "var(--accent)";
 
+    // Parameters MUST match EmailJS template variable names
     const params = {
       from_name: name,
       reply_to: email,
       message: message
     };
 
-    // ✔ Send to OWNER (template_mcod6qm)
-    emailjs
-      .send("service_d34z2l8", "template_mcod6qm", params)
-      .then(() => {
-        // ✔ Send AUTO REPLY to visitor (template_p0u4mwf)
-        return emailjs.send(
-          "service_d34z2l8",
-          "template_p0u4mwf",
-          params
-        );
-      })
-      .then(() => {
-        statusMsg.textContent = "Message sent! Check your email.";
-        contactForm.reset();
-        setTimeout(() => (statusMsg.textContent = ""), 5000);
-      })
-      .catch((err) => {
-        console.error("EmailJS Error:", err);
-        statusMsg.textContent = "Sending failed. Try again.";
-      });
+    try {
+
+      /* STEP 1 → Send to OWNER (template_mcod6qm) */
+      await emailjs.send(
+        "service_d34z2l8",
+        "template_mcod6qm",
+        params
+      );
+
+      /* STEP 2 → Auto-Reply to Client (template_p0u4mwf) */
+      await emailjs.send(
+        "service_d34z2l8",
+        "template_p0u4mwf",
+        params
+      );
+
+      /* SUCCESS RESPONSE */
+      statusMsg.textContent = "Message sent successfully!";
+      statusMsg.style.color = "var(--accent)";
+
+      contactForm.reset(); // Auto-clear fields
+
+      setTimeout(() => {
+        statusMsg.textContent = "";
+      }, 4000);
+
+    } catch (err) {
+
+      console.error("EmailJS Error:", err);
+
+      statusMsg.textContent =
+        "Sending failed. Please check EmailJS configuration.";
+      statusMsg.style.color = "red";
+    }
   });
 }
 
 
 /* ======================
-   Booking System (Calendar + Times)
+   Booking System (Quick booking on index)
    ====================== */
 
 const timeSlotsContainer = document.getElementById("timeSlots");
-const bookingStatus = document.getElementById("bookingStatus");
-const confirmButton = document.getElementById("confirmBooking");
-let selectedTime = "";
-let selectedDate = "";
+const bookingStatus      = document.getElementById("bookingStatus");
+const confirmButton      = document.getElementById("confirmBooking");
+let selectedTime         = "";
+let selectedDate         = "";
 
 const slots = [
   "10:00 AM","11:00 AM","12:00 PM",
@@ -319,34 +333,38 @@ const slots = [
   "6:00 PM","8:00 PM"
 ];
 
-// Generate Time Buttons
-slots.forEach(t => {
-  const btn = document.createElement("button");
-  btn.className = "time-slot";
-  btn.textContent = t;
-  
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".time-slot").forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
-    selectedTime = t;
+if (timeSlotsContainer){
+  // Generate Time Buttons
+  slots.forEach(t => {
+    const btn = document.createElement("button");
+    btn.className = "time-slot";
+    btn.type = "button";
+    btn.textContent = t;
+    
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".time-slot").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedTime = t;
+    });
+
+    timeSlotsContainer.appendChild(btn);
   });
+}
 
-  timeSlotsContainer.appendChild(btn);
-});
+if (confirmButton){
+  confirmButton.addEventListener("click", () => {
+    const dateInput = document.getElementById("bookingDate");
+    selectedDate = dateInput ? dateInput.value : "";
 
-// Confirm Booking
-confirmButton.addEventListener("click", () => {
-  selectedDate = document.getElementById("bookingDate").value;
+    if (!selectedDate || !selectedTime) {
+      bookingStatus.textContent = "Please select a date and time.";
+      return;
+    }
 
-  if (!selectedDate || !selectedTime) {
-    bookingStatus.textContent = "Please select a date and time.";
-    return;
-  }
-
-  bookingStatus.textContent = `Booking Confirmed for ${selectedDate} at ${selectedTime}.`;
-  bookingStatus.style.color = "var(--accent)";
-});
-
+    bookingStatus.textContent = `Booking Confirmed for ${selectedDate} at ${selectedTime}.`;
+    bookingStatus.style.color = "var(--accent)";
+  });
+}
 
 /* ======================
    Loader hide on window load
@@ -358,8 +376,6 @@ window.addEventListener('load', () => {
     loader.classList.add('loader-hide');
   }, 500);
 });
-
-
 
 /* ======================
    Theme Switcher (Dark / Light)
@@ -385,7 +401,6 @@ themeToggleBtn && themeToggleBtn.addEventListener('click', () => {
   applyTheme(newTheme);
 });
 
-
 /* ======================
    Fullscreen Menu Toggle (mobile)
    ====================== */
@@ -398,7 +413,6 @@ if (menuToggle && fullscreenMenu){
     fullscreenMenu.classList.toggle('open');
   });
 
-  // menu links close overlay
   fullscreenMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       fullscreenMenu.classList.remove('open');
@@ -406,7 +420,6 @@ if (menuToggle && fullscreenMenu){
     });
   });
 
-  // ESC close
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape'){
       fullscreenMenu.classList.remove('open');
@@ -415,82 +428,83 @@ if (menuToggle && fullscreenMenu){
   });
 }
 
-
 /* ======================
    Sticky Side Navigation Active Glow
    ====================== */
-const sections = ["home","portfolio","services","pricing","booking","contact"];
+const sectionIds = ["home","portfolio","services","pricing","booking","blog","contact"];
 const navDots = document.querySelectorAll(".side-nav a");
 
 window.addEventListener("scroll", () => {
-  let index = sections.length;
+  let index = sectionIds.length;
 
-  while(--index && window.scrollY + 200 < document.getElementById(sections[index]).offsetTop) {}
+  while(--index && document.getElementById(sectionIds[index]) &&
+        window.scrollY + 200 < document.getElementById(sectionIds[index]).offsetTop) {}
 
   navDots.forEach(dot => dot.classList.remove("active"));
-  navDots[index].classList.add("active");
+  if (navDots[index]) navDots[index].classList.add("active");
 });
 
-// initial active
 if (navDots[0]) navDots[0].classList.add("active");
-
-
 
 /* ---------------------------------------
    GOOGLE SHEET WEBHOOK (Pricing + Booking + Contact)
 ---------------------------------------- */
 const WEBHOOK_URL =
-"https://script.google.com/macros/s/AKfycbwqfHOLP1U7Dr7I9qYSAx6QGarJxAyhhgDOA4PkOLCRjr37TA8UyaNpHJ6LFf1zgA8C/exec";
+  "https://script.google.com/macros/s/AKfycbwqfHOLP1U7Dr7I9qYSAx6QGarJxAyhhgDOA4PkOLCRjr37TA8UyaNpHJ6LFf1zgA8C/exec";
 
-/* ---- Pricing Auto Save ---- */
+/* ---- Pricing Auto Save + Redirect ---- */
 $$(".price-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    const plan = btn.parentElement.querySelector("h3").innerText;
+    const plan = btn.dataset.plan || btn.parentElement.querySelector("h3").innerText;
 
+    // Save selected plan to Google Sheet
     fetch(WEBHOOK_URL, {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({ type: "pricing", plan })
     });
 
-    alert(`Plan Selected: ${plan} (Saved to Google Sheet)`);
+    // Redirect to booking page with plan in URL
+    window.location.href = "booking.html?plan=" + encodeURIComponent(plan);
   });
 });
 
-/* ---- Booking Auto Save ---- */
-$("#confirmBooking").addEventListener("click", () => {
-  const date = bookingDate.value;
-  if (!date || !selectedTime) {
-    bookingStatus.textContent = "Please select date & time.";
-    return;
-  }
+/* ---- Quick Booking Auto Save (index page) ---- */
+if (confirmButton){
+  confirmButton.addEventListener("click", () => {
+    const dateInput = document.getElementById("bookingDate");
+    const date = dateInput ? dateInput.value : "";
 
-  fetch(WEBHOOK_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({
-      type: "booking",
-      date,
-      time: selectedTime
-    })
+    if (!date || !selectedTime) {
+      return; // already handled message above
+    }
+
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        type: "booking",
+        date,
+        time: selectedTime
+      })
+    });
   });
-
-  bookingStatus.textContent = `Booking Confirmed ✔ (Saved to Google Sheet)`;
-});
+}
 
 /* ---- Contact Auto Save ---- */
-contactForm?.addEventListener("submit", e => {
+contactForm?.addEventListener("submit", () => {
+  const nameVal    = $("#name")?.value || "";
+  const emailVal   = $("#email")?.value || "";
+  const messageVal = $("#message")?.value || "";
+
   fetch(WEBHOOK_URL, {
     method: "POST",
     mode: "no-cors",
     body: JSON.stringify({
       type: "contact",
-      name: $("#name").value,
-      email: $("#email").value,
-      message: $("#message").value
+      name: nameVal,
+      email: emailVal,
+      message: messageVal
     })
   });
 });
-
-
-

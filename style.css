@@ -40,7 +40,20 @@ header{
   z-index:1200;
   border-bottom:1px solid rgba(255,255,255,0.03);
 }
-.logo img{height:44px}
+.logo img{
+  height:44px;
+  opacity:0;
+  animation:logoIntro 0.9s ease-out forwards, logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoIntro{
+  0%{transform:scale(.7) translateY(-8px);opacity:0;filter:blur(8px);}
+  60%{transform:scale(1.08) translateY(2px);opacity:1;filter:blur(0);}
+  100%{transform:scale(1) translateY(0);opacity:1;}
+}
+@keyframes logoPulse{
+  0%,100%{filter:drop-shadow(0 0 0 rgba(0,234,255,0));}
+  50%{filter:drop-shadow(0 0 10px rgba(0,234,255,.9));}
+}
 header nav a{
   color:#fff;
   margin-left:20px;
@@ -284,11 +297,16 @@ h2{
   gap:28px;
 }
 .about-img{
-  width:180px;height:180px;
+  width:200px;height:200px;
   border-radius:50%;
   object-fit:cover;
   border:3px solid var(--accent);
-  box-shadow:0 0 24px rgba(0,232,255,0.28);
+  box-shadow:0 0 24px rgba(0,232,255,0.5);
+  transition:.3s;
+}
+.about-img:hover{
+  transform:scale(1.06);
+  box-shadow:0 0 32px rgba(0,232,255,0.9);
 }
 .about-text{
   margin-top:4px;
@@ -479,9 +497,9 @@ footer{
 }
 .testimonial-card{
   background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.06);
-  padding:22px 20px;
-  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  padding:24px 20px;
+  border-radius:16px;
   font-size:14px;
   transition:transform .25s, box-shadow .25s;
 }
@@ -496,13 +514,13 @@ footer{
   margin-bottom:10px;
 }
 .testimonial-card h4{
-  opacity:.6;
+  opacity:.7;
   font-size:13px;
   margin:0;
 }
 .testimonial-card:hover{
   transform:translateY(-6px);
-  box-shadow:0 16px 34px rgba(0,234,255,0.12);
+  box-shadow:0 16px 34px rgba(0,234,255,0.18);
 }
 
 @media(max-width:900px){
@@ -576,12 +594,17 @@ footer{
   .pricing-grid{grid-template-columns:1fr;}
 }
 
-
-
+/* Glassmorphism booking */
 .booking-wrap{
-  max-width:550px;
+  max-width:580px;
   margin:0 auto;
   text-align:center;
+  padding:32px 24px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:0 22px 60px rgba(0,0,0,0.55);
+  backdrop-filter:blur(18px);
 }
 
 .booking-input{
@@ -618,7 +641,7 @@ footer{
   border-color:transparent;
 }
 
-#bookingStatus{
+#bookingStatus,#bookingStatusFull{
   margin-top:12px;
   opacity:.9;
   font-size:14px;
@@ -626,6 +649,7 @@ footer{
 
 
 
+/* BLOG */
 .blog-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -691,7 +715,7 @@ footer{
   }
 }
 
-
+/* Loader */
 #loader{
   position:fixed;
   inset:0;
@@ -734,7 +758,7 @@ footer{
   50%{transform:translateY(-4px);}
 }
 
-
+/* header actions & menu */
 .header-actions{
   display:flex;
   align-items:center;
@@ -760,7 +784,7 @@ footer{
 .menu-toggle{
   flex-direction:column;
   gap:4px;
-  display:none; /* desktop এ hidden */
+  display:none;
 }
 .menu-toggle span{
   width:20px;
@@ -769,8 +793,6 @@ footer{
   display:block;
   transition:.25s;
 }
-
-/* burger to X */
 .menu-toggle.open span:first-child{
   transform:translateY(4px) rotate(45deg);
 }
@@ -829,7 +851,7 @@ footer{
   }
 }
 
-
+/* side nav dots */
 .side-nav{
   position:fixed;
   top:50%;
@@ -856,7 +878,6 @@ footer{
   transform:scale(1.4);
   background:var(--accent);
 }
-
 
 /* THEME: Light mode overrides */
 body[data-theme="light"]{
@@ -925,7 +946,3 @@ body[data-theme="light"] .fullscreen-menu{
 body[data-theme="light"] .fullscreen-menu a{
   color:#111;
 }
-
-
-
-
