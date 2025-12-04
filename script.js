@@ -86,33 +86,43 @@ if (caretEl && hero) {
 /* ==========================
    Scroll Arrow behavior
    ========================== */
-const scrollArrow = $('#scroll-arrow');
-const portfolio = $('#portfolio');
+const scrollArrow = document.getElementById("scroll-arrow");
+const heroSection = document.getElementById("home");
+const nextSection = document.getElementById("portfolio");
 
-function showArrow(){ scrollArrow && scrollArrow.classList.add('show'); }
-function hideArrow(){ scrollArrow && scrollArrow.classList.add('hide'); }
-
-if (scrollArrow && portfolio && hero) {
-  // click scroll
-  scrollArrow.addEventListener('click', ()=>{
-    portfolio.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  // intersection to show/hide arrow depending on hero visibility
-  const heroObserver = new IntersectionObserver(entries=>{
-    entries.forEach(en=>{
-      if (en.isIntersecting && en.intersectionRatio > 0.25) showArrow();
-      else hideArrow();
-    });
-  }, { threshold: [0, 0.25, 0.45, 0.6] });
-
-  heroObserver.observe(hero);
-
-  // force arrow visible on first load (hero on screen)
-  showArrow();
+/* Show arrow */
+function showArrow() {
+  scrollArrow.classList.add("show");
+  scrollArrow.classList.remove("hide");
 }
 
-/* ==========================
+/* Hide arrow */
+function hideArrow() {
+  scrollArrow.classList.add("hide");
+  scrollArrow.classList.remove("show");
+}
+
+/* Click → scroll to next section */
+scrollArrow.addEventListener("click", () => {
+  nextSection.scrollIntoView({ behavior: "smooth" });
+  hideArrow();
+});
+
+/* Show arrow ONLY when hero is in view */
+const heroObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        showArrow();
+      } else {
+        hideArrow();
+      }
+    });
+  },
+  { threshold: 0.55 }
+);
+
+heroObserver.observe(heroSection);/* ==========================
    Floating hero title parallax
    ========================== */
 const floatTitle = $('#float-title');

@@ -84,6 +84,7 @@
   </div>
 
   <!-- HERO SECTION -->
+
   <section id="home" class="hero">
     <video class="hero-video" autoplay muted loop playsinline preload="metadata">
       <source src="Graphics Designer.mp4" type="video/mp4">
@@ -110,11 +111,11 @@
         <a href="https://linkedin.com/in/arajit-halder-8804a2205/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
         <a href="https://wa.me/916295577953" target="_blank"><i class="fab fa-whatsapp"></i></a>
       </div>
+ <!-- Scroll Arrow -->
+      <button id="scroll-arrow" class="scroll-arrow" aria-label="Scroll to next section">
+  <i class="fa-solid fa-chevron-down"></i>
+</button>
 
-      <!-- Scroll Arrow -->
-      <button id="scroll-arrow" class="scroll-arrow" aria-label="Scroll to portfolio">
-        <i class="fa-solid fa-chevron-down"></i>
-      </button>
     </div>
   </section>
 
@@ -165,21 +166,28 @@
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="section reveal">
-    <div class="container about-box">
-      <img src="Images/User.png"
-        class="about-img"
-        alt="Portrait of graphic designer Arajit Halder"
-        loading="lazy"
-        decoding="async">
-      <div>
+  <<section id="about" class="section reveal">
+  <div class="container">
+
+    <div class="about-box">
+
+      <!-- PROFILE IMAGE -->
+      <div class="about-img-wrap">
+        <img src="Images/User.png" class="about-img" alt="Arajit Halder">
+      </div>
+
+      <!-- ABOUT CONTENT -->
+      <div class="about-content">
+
         <h2>About Me</h2>
+
         <p class="about-text">
           I’m Arajit — a modern graphic designer focused on clean, elegant and impactful visuals.
           I blend strategy with aesthetics to build brands that feel premium, consistent, and instantly recognizable.
         </p>
 
         <div class="about-highlights">
+
           <div class="highlight">
             <h3>What I Do</h3>
             <ul>
@@ -189,19 +197,26 @@
               <li>Motion & promo visuals</li>
             </ul>
           </div>
+
           <div class="highlight">
             <h3>Design Values</h3>
             <ul>
-              <li>Minimal, modern and balanced layouts</li>
+              <li>Minimal, modern & balanced layouts</li>
               <li>Strong visual hierarchy & readability</li>
               <li>Consistent brand presence across platforms</li>
               <li>Professional communication & timely delivery</li>
             </ul>
           </div>
+
         </div>
+
       </div>
+
     </div>
-  </section>
+
+  </div>
+</section>
+
 
   <!-- SERVICES -->
   <section id="services" class="section reveal">
