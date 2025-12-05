@@ -427,7 +427,8 @@ if (timeSlotsContainer) {
 }
 
 const WEBHOOK_URL =
-  "https://script.google.com/macros/s/AKfycbxB_Z-xRk8k-njvl1sMs0NOkPhP_0DVpY0lNqBf9fqJ-TbjCdqP_o6hbLSlT-nM-vV6/exec";
+  "https://script.google.com/macros/s/AKfycbweFUEx1KE23Z8-GmpErURqq79zI7AT4K88lDMlqhVfQ6C0tiCPcv0NVh_yvT4op71D/execc"
+;
 
 if (confirmButton) {
   confirmButton.addEventListener("click", () => {
@@ -801,5 +802,41 @@ function speakText(text){
   msg.pitch = 1.0;
   msg.rate  = 1.0;
   speechSynthesis.speak(msg);
+}
+
+
+/* =====================================================
+   CHATBOT SUGGESTION BUTTON ACTIONS
+===================================================== */
+
+document.querySelectorAll(".suggest-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const action = btn.textContent.trim().toLowerCase();
+
+    if (action.includes("portfolio")) {
+      typeBot("Opening portfolio…");
+      scrollToSection("#portfolio");
+      chatBox.classList.remove("open");
+    }
+
+    else if (action.includes("pricing")) {
+      typeBot("Showing pricing plans…");
+      scrollToSection("#pricing");
+      chatBox.classList.remove("open");
+    }
+
+    else if (action.includes("book")) {
+      typeBot("Taking you to the booking page…");
+      setTimeout(() => {
+        window.location.href = "booking.html";
+      }, 500);
+    }
+  });
+});
+
+function scrollToSection(id) {
+  const el = document.querySelector(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
