@@ -632,306 +632,174 @@ document.addEventListener("mousemove", (e) => {
   setTimeout(() => dot.remove(), 900);
 });
 
-/* ======================================================
-   CHATBOT ULTRA + SMART BOOKING FLOW
-====================================================== */
+/* ==============================
+   CHATBOT ULTRA — FINAL VERSION
+============================== */
+
 const CHATBOT_API =
   "https://script.google.com/macros/s/AKfycbxnY8v1hs51GY1dUK-YyRpG7KDba_KqsHbD8K654MNi24-0SUP3UHkWalppa2L9kx0Y/exec";
 
 let chatMemory = [];
 let chatHistory = [];
 
-const chatBoxEl = document.getElementById("chatbot-box");
-const chatBodyEl = document.getElementById("chatbot-body");
-const chatInputEl = document.getElementById("chatbot-text");
-const chatSendEl = document.getElementById("chatbot-send");
-const chatMicEl = document.getElementById("chatbot-mic");
-const chatOpenEl = document.getElementById("chatbot-button");
-const chatCloseEl = document.getElementById("chatbot-close");
+const chatBox   = document.getElementById("chatbot-box");
+const chatBody  = document.getElementById("chatbot-body");
+const chatInput = document.getElementById("chatbot-text");
+const chatSend  = document.getElementById("chatbot-send");
+const chatMic   = document.getElementById("chatbot-mic");
+const chatOpen  = document.getElementById("chatbot-button");
+const chatClose = document.getElementById("chatbot-close");
 const botAvatar = document.querySelector(".chatbot-avatar");
 
-/* UI Open/Close */
-chatOpenEl?.addEventListener("click", () => {
-  chatBoxEl.classList.add("open");
-});
-chatCloseEl?.addEventListener("click", () => {
-  chatBoxEl.classList.remove("open");
-});
+/* ------------------------------------------
+   OPEN / CLOSE CHATBOT
+------------------------------------------ */
+chatOpen?.addEventListener("click", () => chatBox.classList.add("open"));
+chatClose?.addEventListener("click", () => chatBox.classList.remove("open"));
 
-/* Chat helpers */
-function addUser(msg) {
+/* ------------------------------------------
+   MESSAGE ELEMENTS
+------------------------------------------ */
+function addUser(msg){
   const el = document.createElement("div");
   el.className = "user-msg";
   el.textContent = msg;
-  chatBodyEl.appendChild(el);
-  chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
 
   chatHistory.push({ role: "user", text: msg, time: new Date().toISOString() });
 }
 
-function typeBotMessage(text) {
+function typeBot(msg){
   const el = document.createElement("div");
   el.className = "bot-msg";
-  chatBodyEl.appendChild(el);
-  chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
+  chatBody.appendChild(el);
 
   let i = 0;
-  const chars = text;
   const speed = 18;
 
-  startSpeakingAnimation();
-
-  function step() {
-    el.textContent = chars.slice(0, i);
-    chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
+  function loop(){
+    el.textContent = msg.slice(0, i);
+    chatBody.scrollTop = chatBody.scrollHeight;
     i++;
-    if (i <= chars.length) {
-      setTimeout(step, speed);
-    } else {
-      stopSpeakingAnimation();
-      speakText(text);
-    }
+    if(i <= msg.length) setTimeout(loop, speed);
+    else speakText(msg);
   }
-  step();
+  loop();
 
-  chatHistory.push({ role: "bot", text, time: new Date().toISOString() });
+  chatHistory.push({ role: "bot", text: msg, time: new Date().toISOString() });
 }
 
-function showThinking() {
+function showThinking(){
   const t = document.createElement("div");
   t.className = "bot-msg typing";
-  t.innerHTML = `<span></span><span></span><span></span>`;
-  chatBodyEl.appendChild(t);
-  chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
+  t.innerHTML = "<span></span><span></span><span></span>";
+  chatBody.appendChild(t);
+  chatBody.scrollTop = chatBody.scrollHeight;
   return t;
 }
 
-/* Smart scroll actions */
-function scrollToSection(id) {
-  const el = document.querySelector(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-  el.classList.add("section-highlight");
-  setTimeout(() => el.classList.remove("section-highlight"), 1600);
-}
+/* ------------------------------------------
+   AUTO BOOKING REDIRECT
+------------------------------------------ */
+function checkForBookingRedirect(text){
+  const t = text.toLowerCase();
 
-function smartActions(userText, aiText) {
-  const txt = (userText + " " + (aiText || "")).toLowerCase();
-  if (txt.includes("pricing") || txt.includes("price") || txt.includes("plan"))
-    scrollToSection("#pricing");
-  if (txt.includes("portfolio") || txt.includes("work") || txt.includes("projects"))
-    scrollToSection("#portfolio");
   if (
-    txt.includes("book") ||
-    txt.includes("booking") ||
-    txt.includes("session") ||
-    txt.includes("call")
-  )
-    scrollToSection("#booking");
-  if (txt.includes("contact") || txt.includes("email") || txt.includes("reach you"))
-    scrollToSection("#contact");
+    t.includes("book") ||
+    t.includes("booking") ||
+    t.includes("appointment") ||
+    t.includes("session")
+  ) {
+    typeBot("Sure! Taking you to the booking page…");
+
+    setTimeout(() => {
+      window.location.href = "booking.html";
+    }, 900);
+
+    return true;
+  }
+
+  return false;
 }
 
-/* Ask AI */
-async function askAI(msg) {
+/* ------------------------------------------
+   ASK AI
+------------------------------------------ */
+async function askAI(msg){
   const thinking = showThinking();
 
-  try {
+  try{
     const res = await fetch(CHATBOT_API, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        type: "chat",
         message: msg,
-        memory: chatMemory,
-      }),
+        memory: chatMemory
+      })
     });
 
-    const data = await res.json();
+    const data  = await res.json();
+    const reply = data.reply || "I could not respond.";
+
     thinking.remove();
+    typeBot(reply);
 
-    const reply = data.reply || "AI error.";
-    typeBotMessage(reply);
+    chatMemory.push(msg);
+    chatMemory.push(reply);
+    if(chatMemory.length > 10) chatMemory.shift();
 
-    chatMemory.push(msg, reply);
-    if (chatMemory.length > 10) chatMemory.shift();
-
-    smartActions(msg, reply);
-  } catch (e) {
+  } catch(err){
     thinking.remove();
-    typeBotMessage("Network error. Please try again.");
+    typeBot("Network error, please try again.");
   }
 }
 
-/* Booking flow for chatbot */
-let bookingFlow = {
-  active: false,
-  step: 0,
-  data: {},
-};
-
-function startBookingFlow() {
-  bookingFlow.active = true;
-  bookingFlow.step = 1;
-  typeBotMessage("Sure! What date would you like to book? (YYYY-MM-DD)");
-}
-
-async function handleBookingFlow(userMessage) {
-  if (bookingFlow.step === 1) {
-    bookingFlow.data.date = userMessage.trim();
-    bookingFlow.step = 2;
-    typeBotMessage("Great! What time would you like? (e.g., 10:00 AM)");
-    return;
-  }
-
-  if (bookingFlow.step === 2) {
-    bookingFlow.data.time = userMessage.trim();
-    bookingFlow.step = 3;
-    typeBotMessage("Almost done! What's your name?");
-    return;
-  }
-
-  if (bookingFlow.step === 3) {
-    bookingFlow.data.name = userMessage.trim();
-    bookingFlow.step = 4;
-    typeBotMessage("Perfect! What is your email?");
-    return;
-  }
-
-  if (bookingFlow.step === 4) {
-    bookingFlow.data.email = userMessage.trim();
-    bookingFlow.step = 5;
-    typeBotMessage("Any project notes you'd like to add?");
-    return;
-  }
-
-  if (bookingFlow.step === 5) {
-    bookingFlow.data.notes = userMessage.trim();
-    typeBotMessage("Saving your booking… 🔄");
-
-    await fetch(CHATBOT_API, {
-      method: "POST",
-      body: JSON.stringify({
-        type: "booking",
-        ...bookingFlow.data,
-      }),
-    });
-
-    typeBotMessage(
-      `🎉 Your session is booked!\n\n` +
-        `📅 Date: ${bookingFlow.data.date}\n` +
-        `⏰ Time: ${bookingFlow.data.time}\n` +
-        `👤 Name: ${bookingFlow.data.name}\n` +
-        `📧 Email: ${bookingFlow.data.email}\n\n` +
-        `I’ll email you shortly with the next steps.`
-    );
-
-    bookingFlow.active = false;
-    bookingFlow.step = 0;
-    bookingFlow.data = {};
-  }
-}
-
-/* Send message */
-async function sendChatMessage() {
-  const text = chatInputEl.value.trim();
-  if (!text) return;
+/* ------------------------------------------
+   SEND MESSAGE
+------------------------------------------ */
+function sendChatMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
 
   addUser(text);
+  chatInput.value = "";
 
-  if (bookingFlow.active) {
-    chatInputEl.value = "";
-    await handleBookingFlow(text);
-    return;
-  }
+  // AUTO redirect to booking if keyword detected
+  if (checkForBookingRedirect(text)) return;
 
-  const lower = text.toLowerCase();
-  if (
-    lower.includes("book") ||
-    lower.includes("booking") ||
-    lower.includes("appointment") ||
-    lower.includes("session")
-  ) {
-    chatInputEl.value = "";
-    startBookingFlow();
-    return;
-  }
-
-  chatInputEl.value = "";
   askAI(text);
 }
 
-chatSendEl?.addEventListener("click", sendChatMessage);
-chatInputEl?.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") sendChatMessage();
+chatSend?.addEventListener("click", sendChatMessage);
+chatInput?.addEventListener("keydown", e => {
+  if(e.key === "Enter") sendChatMessage();
 });
 
-/* Voice input */
+/* ------------------------------------------
+   VOICE INPUT (Speech-to-text)
+------------------------------------------ */
 let recognition;
-if ("webkitSpeechRecognition" in window) {
+if("webkitSpeechRecognition" in window){
   recognition = new webkitSpeechRecognition();
   recognition.lang = "en-US";
-  recognition.interimResults = false;
 
-  chatMicEl?.addEventListener("click", () => {
-    recognition.start();
-    chatMicEl.classList.add("listening");
-  });
+  chatMic.addEventListener("click", () => recognition.start());
 
-  recognition.onresult = (event) => {
-    const text = event.results[0][0].transcript;
-    chatInputEl.value = text;
-    chatMicEl.classList.remove("listening");
-  };
-
-  recognition.onend = () => {
-    chatMicEl.classList.remove("listening");
+  recognition.onresult = e => {
+    chatInput.value = e.results[0][0].transcript;
   };
 }
 
-/* Voice output */
-function speakText(text) {
-  if (!("speechSynthesis" in window)) return;
+/* ------------------------------------------
+   VOICE OUTPUT (Bot Speaks)
+------------------------------------------ */
+function speakText(text){
   const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "en-US";
   msg.pitch = 1.0;
-  msg.rate = 1.0;
-  window.speechSynthesis.speak(msg);
+  msg.rate  = 1.0;
+  speechSynthesis.speak(msg);
 }
 
-/* Avatar animation */
-function startSpeakingAnimation() {
-  botAvatar?.classList.add("bot-speaking");
-}
-function stopSpeakingAnimation() {
-  botAvatar?.classList.remove("bot-speaking");
-}
-
-/* Chat history export */
-/* ==========================================
-   Chat History Export (Download .txt)
-========================================== */
-function exportChatHistory() {
-  if (!chatHistory.length) return;
-
-  const lines = chatHistory.map(
-    entry => `[${entry.time}] ${entry.role.toUpperCase()}: ${entry.text}`
-  );
-  const content = lines.join("\n\n");
-
-  const blob = new Blob([content], { type: "text/plain" });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement("a");
-  a.href = url;
-  a.download = "arajit-chatbot-history.txt";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-/* Suggestions auto-fill */
-document.querySelectorAll(".suggest-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    chatInputEl.value = btn.textContent;
-    sendChatMessage();
-  });
-});
