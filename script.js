@@ -33,7 +33,6 @@ if (aboutImgWrap) {
   aboutImgWrap.addEventListener("mousemove", (e) => {
     const x = e.clientX - wrapRect.left;
     const y = e.clientY - wrapRect.top;
-
     const percentX = (x / wrapRect.width - 0.5) * 2;
     const percentY = (y / wrapRect.height - 0.5) * 2;
 
@@ -43,13 +42,9 @@ if (aboutImgWrap) {
 
     const dist = Math.sqrt(percentX * percentX + percentY * percentY);
 
-    if (dist < 0.35) {
-      skinBounce.dataset.bounce = "strong";
-    } else if (dist < 0.65) {
-      skinBounce.dataset.bounce = "medium";
-    } else {
-      skinBounce.dataset.bounce = "soft";
-    }
+    if (dist < 0.35) skinBounce.dataset.bounce = "strong";
+    else if (dist < 0.65) skinBounce.dataset.bounce = "medium";
+    else skinBounce.dataset.bounce = "soft";
 
     skinBounce.style.opacity = 1;
     skinBounce.style.left = `${x}px`;
@@ -63,18 +58,15 @@ if (aboutImgWrap) {
 }
 
 /* ======================================================
-   EMAILJS INIT (PUBLIC KEY)
+   EMAILJS INIT
 ====================================================== */
 if (window.emailjs && typeof emailjs.init === "function") {
-  try {
-    emailjs.init("jx3isFO17H8uIbius");
-  } catch (e) {
-    console.warn("EmailJS init failed", e);
-  }
+  try { emailjs.init("jx3isFO17H8uIbius"); } 
+  catch (e) { console.warn("EmailJS init failed", e); }
 }
 
 /* ======================================================
-   CUSTOM CURSOR (SMALL)
+   CUSTOM CURSOR
 ====================================================== */
 const cursor = document.getElementById("cursor");
 if (cursor) {
@@ -97,32 +89,24 @@ if (cursor) {
   }
   animateCursor();
 
-  const hoverTargets = "a, button, .btn, .card, .filter";
+  const hoverTargets = "a, button, .btn, .card, .filter, .price-card, .service-card";
   document.querySelectorAll(hoverTargets).forEach((el) => {
-    el.addEventListener("mouseenter", () =>
-      cursor.classList.add("cursor-hover")
-    );
-    el.addEventListener("mouseleave", () =>
-      cursor.classList.remove("cursor-hover")
-    );
+    el.addEventListener("mouseenter", () => cursor.classList.add("cursor-hover"));
+    el.addEventListener("mouseleave", () => cursor.classList.remove("cursor-hover"));
   });
 }
 
 /* ======================================================
-   HERO TYPING TEXT
+   HERO TYPING
 ====================================================== */
 const typedEl = $("#typed-text");
-const caretEl = $("#hero-caret");
 const typingWords = [
   "Modern Graphic Designer",
   "Brand Identity Specialist",
   "UI Layout & Visual Designer",
   "Motion & Promo Visuals",
 ];
-
-let wordIndex = 0,
-  charIndex = 0,
-  deleting = false;
+let wordIndex = 0, charIndex = 0, deleting = false;
 
 (function typingLoop() {
   if (!typedEl) return;
@@ -144,68 +128,16 @@ let wordIndex = 0,
   setTimeout(typingLoop, deleting ? 45 : 110);
 })();
 
-const hero = $("#home");
-if (caretEl && hero) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(
-        (en) => (caretEl.style.opacity = en.isIntersecting ? "1" : "0")
-      );
-    },
-    { threshold: 0.35 }
-  );
-  io.observe(hero);
-}
-
 /* ======================================================
-   SCROLL ARROW
+   GENERAL UI (Scroll, Filters, Lightbox)
 ====================================================== */
 const scrollArrow = document.getElementById("scroll-arrow");
-const heroSection = document.getElementById("home");
 const nextSection = document.getElementById("portfolio");
-
-if (scrollArrow && heroSection && nextSection) {
-  function showArrow() {
-    scrollArrow.classList.add("show");
-    scrollArrow.classList.remove("hide");
-  }
-  function hideArrow() {
-    scrollArrow.classList.add("hide");
-    scrollArrow.classList.remove("show");
-  }
-
-  scrollArrow.addEventListener("click", () => {
-    nextSection.scrollIntoView({ behavior: "smooth" });
-    hideArrow();
-  });
-
-  const heroObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) showArrow();
-        else hideArrow();
-      });
-    },
-    { threshold: 0.55 }
-  );
-  heroObserver.observe(heroSection);
+if (scrollArrow && nextSection) {
+  scrollArrow.addEventListener("click", () => nextSection.scrollIntoView({ behavior: "smooth" }));
 }
 
-/* ======================================================
-   FLOATING HERO TITLE PARALLAX
-====================================================== */
-const floatTitle = $("#float-title");
-if (floatTitle) {
-  document.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 10;
-    const y = (e.clientY / window.innerHeight - 0.5) * 8;
-    floatTitle.style.transform = `translate(${x}px, ${y}px)`;
-  });
-}
-
-/* ======================================================
-   PORTFOLIO FILTER + UNDERLINE + REVEAL
-====================================================== */
+// Portfolio Filter
 const filters = $$(".filter");
 const underline = $("#filter-underline");
 const cards = $$(".card");
@@ -216,39 +148,31 @@ function moveUnderlineTo(btn) {
   underline.style.width = `${btn.offsetWidth}px`;
   underline.style.left = `${btn.offsetLeft}px`;
 }
-
 if (filters.length && underline) {
   const active = document.querySelector(".filter.active") || filters[0];
   moveUnderlineTo(active);
-  window.addEventListener("resize", () =>
-    moveUnderlineTo(document.querySelector(".filter.active") || filters[0])
-  );
+  window.addEventListener("resize", () => moveUnderlineTo(document.querySelector(".filter.active") || filters[0]));
 }
-
 filters.forEach((btn) => {
   btn.addEventListener("click", () => {
     filters.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     moveUnderlineTo(btn);
-
     const f = btn.dataset.filter;
     cards.forEach((card, i) => {
       if (f === "all" || card.dataset.category === f) {
         card.style.display = "block";
-        card.classList.remove("hidden");
-        setTimeout(() => card.classList.add("revealed"), i * 90);
+        setTimeout(() => { card.classList.remove("hidden"); card.classList.add("revealed"); }, 50);
       } else {
-        card.classList.remove("revealed");
         card.classList.add("hidden");
-        setTimeout(() => (card.style.display = "none"), 420);
+        setTimeout(() => (card.style.display = "none"), 300);
       }
     });
   });
 });
 
 if (portfolioSection) {
-  const portfolioObserver = new IntersectionObserver(
-    (entries, obs) => {
+  const portfolioObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           cards.forEach((card, i) => {
@@ -262,59 +186,29 @@ if (portfolioSection) {
           obs.unobserve(entry.target);
         }
       });
-    },
-    { threshold: 0.18 }
-  );
+    }, { threshold: 0.18 });
   portfolioObserver.observe(portfolioSection);
 }
 
-/* 3D tilt */
-cards.forEach((card) => {
-  card.addEventListener("mousemove", (e) => {
-    const r = card.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    card.style.transform = `perspective(800px) rotateX(${
-      -py * 6
-    }deg) rotateY(${px * 8}deg) translateY(-6px) scale(1.02)`;
-  });
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "";
-  });
-});
-
-/* ======================================================
-   LIGHTBOX
-====================================================== */
+// Lightbox
 let lightbox = null;
 function openLightbox(src, alt = "") {
   if (lightbox) return;
   lightbox = document.createElement("div");
   lightbox.className = "lightbox";
-  lightbox.innerHTML = `
-    <button class="lb-close" aria-label="Close">&times;</button>
-    <img src="${src}" alt="${alt}">
-  `;
+  lightbox.innerHTML = `<button class="lb-close">&times;</button><img src="${src}" alt="${alt}">`;
   document.body.appendChild(lightbox);
   document.body.style.overflow = "hidden";
-
   lightbox.querySelector(".lb-close").addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener("keydown", escLB);
+  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 }
 function closeLightbox() {
   if (!lightbox) return;
   lightbox.remove();
   lightbox = null;
   document.body.style.overflow = "";
-  document.removeEventListener("keydown", escLB);
 }
-function escLB(e) {
-  if (e.key === "Escape") closeLightbox();
-}
-
 $$(".card").forEach((card) => {
   card.addEventListener("click", () => {
     const img = card.querySelector("img");
@@ -323,23 +217,14 @@ $$(".card").forEach((card) => {
 });
 
 /* ======================================================
-   SMOOTH ANCHOR NAV
+   WEBHOOK URL (IMPORTANT: PASTE YOUR URL HERE)
 ====================================================== */
-$$('a[href^="#"]').forEach((a) => {
-  a.addEventListener("click", (e) => {
-    const href = a.getAttribute("href");
-    if (href && href.length > 1) {
-      const tgt = document.querySelector(href);
-      if (tgt) {
-        e.preventDefault();
-        tgt.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  });
-});
+// *** এই URL-টি তোমার Google Apps Script থেকে পাওয়া Web App URL হতে হবে ***
+const BOOKING_WEBHOOK = "YOUR_WEB_APP_URL_HERE"; 
+
 
 /* ======================================================
-   CONTACT FORM + EMAILJS
+   CONTACT & BOOKING SYSTEM (Main Page)
 ====================================================== */
 const contactForm = document.getElementById("contactForm");
 const statusMsg = document.getElementById("statusMsg");
@@ -347,65 +232,37 @@ const statusMsg = document.getElementById("statusMsg");
 if (contactForm) {
   contactForm.addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
+    const name = $("#name").value.trim();
+    const email = $("#email").value.trim();
+    const message = $("#message").value.trim();
 
     if (!name || !email || !message) {
       statusMsg.textContent = "Please fill out all fields.";
       statusMsg.style.color = "red";
       return;
     }
-
     statusMsg.textContent = "Sending…";
     statusMsg.style.color = "var(--accent)";
 
-    const params = {
-      from_name: name,
-      reply_to: email,
-      message: message,
-    };
-
     try {
-      await emailjs.send("service_d34z2l8", "template_mcod6qm", params);
-      await emailjs.send("service_d34z2l8", "template_p0u4mwf", params);
-
+      await emailjs.send("service_d34z2l8", "template_mcod6qm", { from_name: name, reply_to: email, message: message });
       statusMsg.textContent = "Message sent successfully!";
-      statusMsg.style.color = "var(--accent)";
       contactForm.reset();
-
-      setTimeout(() => {
-        statusMsg.textContent = "";
-      }, 4000);
+      setTimeout(() => { statusMsg.textContent = ""; }, 4000);
     } catch (err) {
       console.error("EmailJS Error:", err);
-      statusMsg.textContent =
-        "Sending failed. Please check EmailJS configuration.";
+      statusMsg.textContent = "Sending failed.";
       statusMsg.style.color = "red";
     }
   });
 }
 
-/* ======================================================
-   BOOKING (QUICK BOOKING + SHEET SAVE)
-====================================================== */
+// Quick Booking on Main Page
 const timeSlotsContainer = document.getElementById("timeSlots");
 const bookingStatus = document.getElementById("bookingStatus");
 const confirmButton = document.getElementById("confirmBooking");
 let selectedTime = "";
-let selectedDate = "";
-
-const slots = [
-  "10:00 AM",
-  "11:00 AM",
-  "12:00 PM",
-  "2:00 PM",
-  "3:00 PM",
-  "4:00 PM",
-  "6:00 PM",
-  "8:00 PM",
-];
+const slots = ["10:00 AM","11:00 AM","12:00 PM","2:00 PM","3:00 PM","4:00 PM","6:00 PM","8:00 PM"];
 
 if (timeSlotsContainer) {
   slots.forEach((t) => {
@@ -413,282 +270,106 @@ if (timeSlotsContainer) {
     btn.className = "time-slot";
     btn.type = "button";
     btn.textContent = t;
-
     btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".time-slot")
-        .forEach((b) => b.classList.remove("selected"));
+      document.querySelectorAll(".time-slot").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedTime = t;
     });
-
     timeSlotsContainer.appendChild(btn);
   });
 }
 
-const WEBHOOK_URL =
-  "https://script.google.com/macros/s/AKfycbweFUEx1KE23Z8-GmpErURqq79zI7AT4K88lDMlqhVfQ6C0tiCPcv0NVh_yvT4op71D/execc"
-;
-
 if (confirmButton) {
   confirmButton.addEventListener("click", () => {
     const dateInput = document.getElementById("bookingDate");
-    selectedDate = dateInput ? dateInput.value : "";
-
+    const selectedDate = dateInput ? dateInput.value : "";
     if (!selectedDate || !selectedTime) {
       bookingStatus.textContent = "Please select a date and time.";
       bookingStatus.style.color = "red";
       return;
     }
-
-    bookingStatus.textContent = `Booking Confirmed for ${selectedDate} at ${selectedTime}.`;
-    bookingStatus.style.color = "var(--accent)";
-
-    fetch(WEBHOOK_URL, {
+    bookingStatus.textContent = `Booking...`;
+    fetch(BOOKING_WEBHOOK, {
       method: "POST",
       mode: "no-cors",
-      body: JSON.stringify({
-        type: "booking",
-        date: selectedDate,
-        time: selectedTime,
-      }),
+      body: JSON.stringify({ type: "booking", date: selectedDate, time: selectedTime, plan: "Quick Booking" }),
+    }).then(() => {
+        bookingStatus.textContent = `Booking Confirmed for ${selectedDate} at ${selectedTime}.`;
+        bookingStatus.style.color = "var(--accent)";
+    }).catch(e => {
+        bookingStatus.textContent = "Error booking.";
     });
   });
 }
 
-/* Save CONTACT to Sheet */
-contactForm?.addEventListener("submit", () => {
-  const nameVal = $("#name")?.value || "";
-  const emailVal = $("#email")?.value || "";
-  const messageVal = $("#message")?.value || "";
-
-  fetch(WEBHOOK_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({
-      type: "contact",
-      name: nameVal,
-      email: emailVal,
-      message: messageVal,
-    }),
-  });
-});
-
-/* PRICING → Sheet + Redirect */
+// Pricing Redirect
 $$(".price-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const plan = btn.dataset.plan || btn.parentElement.querySelector("h3").innerText;
-
-    fetch(WEBHOOK_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ type: "pricing", plan }),
-    });
-
+    const plan = btn.dataset.plan || "Standard";
     window.location.href = "booking.html?plan=" + encodeURIComponent(plan);
   });
 });
 
 /* ======================================================
-   LOADER
-====================================================== */
-const loader = $("#loader");
-window.addEventListener("load", () => {
-  if (!loader) return;
-  setTimeout(() => {
-    loader.classList.add("loader-hide");
-  }, 500);
-});
-
-/* ======================================================
-   THEME SWITCHER
+   THEME SWITCHER & LOADER
 ====================================================== */
 const themeToggleBtn = $("#themeToggle");
 const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector("i") : null;
-
 function applyTheme(theme) {
   document.body.dataset.theme = theme;
-  if (themeIcon) {
-    themeIcon.className =
-      theme === "light" ? "fa-regular fa-sun" : "fa-regular fa-moon";
-  }
+  if (themeIcon) themeIcon.className = theme === "light" ? "fa-regular fa-sun" : "fa-regular fa-moon";
 }
-
 const savedTheme = localStorage.getItem("theme") || "dark";
 applyTheme(savedTheme);
-
-themeToggleBtn &&
-  themeToggleBtn.addEventListener("click", () => {
-    const newTheme =
-      document.body.dataset.theme === "light" ? "dark" : "light";
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-  });
-
-/* ======================================================
-   FULLSCREEN MENU (MOBILE)
-====================================================== */
-const menuToggle = $("#menuToggle");
-const fullscreenMenu = $("#fullscreenMenu");
-
-if (menuToggle && fullscreenMenu) {
-  menuToggle.addEventListener("click", () => {
-    menuToggle.classList.toggle("open");
-    fullscreenMenu.classList.toggle("open");
-  });
-
-  fullscreenMenu.querySelectorAll("a").forEach((link) =>
-    link.addEventListener("click", () => {
-      fullscreenMenu.classList.remove("open");
-      menuToggle.classList.remove("open");
-    })
-  );
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      fullscreenMenu.classList.remove("open");
-      menuToggle.classList.remove("open");
-    }
-  });
-}
-
-/* ======================================================
-   STICKY SIDE NAV DOTS
-====================================================== */
-const sectionIds = [
-  "home",
-  "portfolio",
-  "services",
-  "pricing",
-  "booking",
-  "blog",
-  "contact",
-];
-const navDots = document.querySelectorAll(".side-nav a");
-
-window.addEventListener("scroll", () => {
-  let index = sectionIds.length;
-  while (
-    --index &&
-    document.getElementById(sectionIds[index]) &&
-    window.scrollY + 200 <
-      document.getElementById(sectionIds[index]).offsetTop
-  ) {}
-  navDots.forEach((dot) => dot.classList.remove("active"));
-  if (navDots[index]) navDots[index].classList.add("active");
-});
-if (navDots[0]) navDots[0].classList.add("active");
-
-/* ======================================================
-   MAGNETIC HOVER
-====================================================== */
-function createMagnetEffect(targets, strength = 0.25, maxPull = 40) {
-  const elements = document.querySelectorAll(targets);
-
-  elements.forEach((el) => {
-    let rect, centerX, centerY;
-
-    function updateCenter() {
-      rect = el.getBoundingClientRect();
-      centerX = rect.left + rect.width / 2;
-      centerY = rect.top + rect.height / 2;
-    }
-    updateCenter();
-    window.addEventListener("resize", updateCenter);
-
-    el.addEventListener("mousemove", (e) => {
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
-
-      const pullX = Math.max(Math.min(dx * strength, maxPull), -maxPull);
-      const pullY = Math.max(Math.min(dy * strength, maxPull), -maxPull);
-
-      el.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.03)`;
+if(themeToggleBtn){
+    themeToggleBtn.addEventListener("click", () => {
+        const newTheme = document.body.dataset.theme === "light" ? "dark" : "light";
+        localStorage.setItem("theme", newTheme);
+        applyTheme(newTheme);
     });
-
-    el.addEventListener("mouseleave", () => {
-      el.style.transform = "translate(0px, 0px) scale(1)";
-    });
-  });
 }
-
-createMagnetEffect(".card", 0.2, 32);
-createMagnetEffect(".service-card", 0.2, 28);
-createMagnetEffect(".price-card", 0.18, 25);
-createMagnetEffect(".blog-card", 0.25, 28);
-createMagnetEffect(".about-img-visual", 0.18, 20);
-
-/* ======================================================
-   GLOW TRAIL
-====================================================== */
-document.addEventListener("mousemove", (e) => {
-  const dot = document.createElement("div");
-  dot.className = "glow-dot";
-  dot.style.position = "fixed";
-  dot.style.left = e.clientX + "px";
-  dot.style.top = e.clientY + "px";
-  dot.style.pointerEvents = "none";
-  dot.style.zIndex = 9999;
-  document.body.appendChild(dot);
-  setTimeout(() => dot.remove(), 900);
+const loader = $("#loader");
+window.addEventListener("load", () => {
+  if (loader) setTimeout(() => loader.classList.add("loader-hide"), 500);
 });
 
-/* ==============================
-   CHATBOT ULTRA — FINAL VERSION
-============================== */
 
-const CHATBOT_API =
-  "https://script.google.com/macros/s/AKfycbxnY8v1hs51GY1dUK-YyRpG7KDba_KqsHbD8K654MNi24-0SUP3UHkWalppa2L9kx0Y/exec";
+/* ======================================================
+   CHATBOT 2.0 (With In-Chat Booking)
+====================================================== */
+const CHATBOT_API = "https://script.google.com/macros/s/AKfycbxnY8v1hs51GY1dUK-YyRpG7KDba_KqsHbD8K654MNi24-0SUP3UHkWalppa2L9kx0Y/exec";
 
 let chatMemory = [];
-let chatHistory = [];
-
-const chatBox   = document.getElementById("chatbot-box");
-const chatBody  = document.getElementById("chatbot-body");
+const chatBox = document.getElementById("chatbot-box");
+const chatBody = document.getElementById("chatbot-body");
 const chatInput = document.getElementById("chatbot-text");
-const chatSend  = document.getElementById("chatbot-send");
-const chatMic   = document.getElementById("chatbot-mic");
-const chatOpen  = document.getElementById("chatbot-button");
+const chatSend = document.getElementById("chatbot-send");
+const chatOpen = document.getElementById("chatbot-button");
 const chatClose = document.getElementById("chatbot-close");
-const botAvatar = document.querySelector(".chatbot-avatar");
 
-/* ------------------------------------------
-   OPEN / CLOSE CHATBOT
------------------------------------------- */
-chatOpen?.addEventListener("click", () => chatBox.classList.add("open"));
-chatClose?.addEventListener("click", () => chatBox.classList.remove("open"));
+if(chatOpen) chatOpen.addEventListener("click", () => chatBox.classList.add("open"));
+if(chatClose) chatClose.addEventListener("click", () => chatBox.classList.remove("open"));
 
-/* ------------------------------------------
-   MESSAGE ELEMENTS
------------------------------------------- */
 function addUser(msg){
   const el = document.createElement("div");
   el.className = "user-msg";
   el.textContent = msg;
   chatBody.appendChild(el);
   chatBody.scrollTop = chatBody.scrollHeight;
-
-  chatHistory.push({ role: "user", text: msg, time: new Date().toISOString() });
 }
 
 function typeBot(msg){
   const el = document.createElement("div");
   el.className = "bot-msg";
   chatBody.appendChild(el);
-
+  
   let i = 0;
-  const speed = 18;
-
-  function loop(){
-    el.textContent = msg.slice(0, i);
+  const interval = setInterval(() => {
+    el.textContent += msg.charAt(i);
     chatBody.scrollTop = chatBody.scrollHeight;
     i++;
-    if(i <= msg.length) setTimeout(loop, speed);
-    else speakText(msg);
-  }
-  loop();
-
-  chatHistory.push({ role: "bot", text: msg, time: new Date().toISOString() });
+    if (i >= msg.length) clearInterval(interval);
+  }, 15);
 }
 
 function showThinking(){
@@ -700,143 +381,168 @@ function showThinking(){
   return t;
 }
 
-/* ------------------------------------------
-   AUTO BOOKING REDIRECT
------------------------------------------- */
-function checkForBookingRedirect(text){
-  const t = text.toLowerCase();
+// *** MINI BOOKING FORM RENDERER ***
+function renderBookingForm() {
+    const formID = "chat-form-" + Date.now();
+    const div = document.createElement("div");
+    div.className = "bot-msg";
+    div.innerHTML = `
+        <p style="margin-bottom:8px;">Fill this out to book a session instantly:</p>
+        <div class="chat-form" id="${formID}">
+            <input type="text" placeholder="Your Name" class="chat-input c-name">
+            <input type="email" placeholder="Your Email" class="chat-input c-email">
+            <input type="date" class="chat-input c-date">
+            <select class="chat-input c-time">
+                <option value="" disabled selected>Select Time</option>
+                <option>10:00 AM</option>
+                <option>12:00 PM</option>
+                <option>02:00 PM</option>
+                <option>04:00 PM</option>
+                <option>06:00 PM</option>
+            </select>
+            <button class="chat-submit-btn">Confirm Booking</button>
+        </div>
+    `;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-  if (
-    t.includes("book") ||
-    t.includes("booking") ||
-    t.includes("appointment") ||
-    t.includes("session")
-  ) {
-    typeBot("Sure! Taking you to the booking page…");
+    // Add listener to this specific form
+    const btn = div.querySelector(".chat-submit-btn");
+    btn.addEventListener("click", () => {
+        const name = div.querySelector(".c-name").value;
+        const email = div.querySelector(".c-email").value;
+        const date = div.querySelector(".c-date").value;
+        const time = div.querySelector(".c-time").value;
 
-    setTimeout(() => {
-      window.location.href = "booking.html";
-    }, 900);
+        if(!name || !email || !date || !time) {
+            typeBot("Please fill all fields to proceed.");
+            return;
+        }
 
-    return true;
-  }
+        btn.textContent = "Booking...";
+        btn.disabled = true;
 
-  return false;
+        // Send to Sheet via Webhook
+        fetch(BOOKING_WEBHOOK, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify({
+                type: "booking",
+                name: name,
+                email: email,
+                date: date,
+                time: time,
+                plan: "Chat Booking"
+            })
+        }).then(() => {
+            div.remove(); // Remove form after success
+            typeBot(`Thanks ${name}! Your booking for ${date} at ${time} is confirmed. I've sent you an email.`);
+        }).catch(() => {
+            btn.textContent = "Retry";
+            btn.disabled = false;
+            typeBot("Network error. Please try again.");
+        });
+    });
 }
 
-/* ------------------------------------------
-   ASK AI
------------------------------------------- */
+// OFFLINE FALLBACK
+function getOfflineReply(text) {
+  const t = text.toLowerCase();
+  if (t.includes("hi") || t.includes("hello")) return "Hello! I'm Arajit's AI assistant.";
+  if (t.includes("price") || t.includes("cost")) return "My pricing starts at ₹999. Check the Pricing section.";
+  return "I'm offline right now, but you can use the booking form!";
+}
+
 async function askAI(msg){
   const thinking = showThinking();
+  let replied = false;
 
-  try{
-    const res = await fetch(CHATBOT_API, {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+    const response = await fetch(CHATBOT_API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: "chat",
-        message: msg,
-        memory: chatMemory
-      })
+      redirect: "follow", 
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ type: "chat", message: msg, memory: chatMemory }),
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
-    const data  = await res.json();
-    const reply = data.reply || "I could not respond.";
+    if(response.ok) {
+        const data = await response.json();
+        const reply = data.reply;
+        if(reply) {
+            thinking.remove();
+            typeBot(reply);
+            chatMemory.push(msg);
+            chatMemory.push(reply);
+            replied = true;
+        }
+    }
+  } catch(err) { }
 
+  if (!replied) {
     thinking.remove();
-    typeBot(reply);
-
-    chatMemory.push(msg);
-    chatMemory.push(reply);
-    if(chatMemory.length > 10) chatMemory.shift();
-
-  } catch(err){
-    thinking.remove();
-    typeBot("Network error, please try again.");
+    typeBot(getOfflineReply(msg));
   }
 }
 
-/* ------------------------------------------
-   SEND MESSAGE
------------------------------------------- */
 function sendChatMessage(){
   const text = chatInput.value.trim();
   if(!text) return;
-
+  
   addUser(text);
   chatInput.value = "";
+  
+  const lower = text.toLowerCase();
+  
+  // *** TRIGGER IN-CHAT BOOKING ***
+  if (lower.includes("book") || lower.includes("appointment") || lower.includes("schedule")) {
+    renderBookingForm(); // Show form instead of redirecting
+    return;
+  }
 
-  // AUTO redirect to booking if keyword detected
-  if (checkForBookingRedirect(text)) return;
+  if (lower.includes("price") || lower.includes("cost")) {
+    typeBot("Scrolling to pricing section...");
+    document.getElementById("pricing").scrollIntoView({behavior:"smooth"});
+    return;
+  }
 
   askAI(text);
 }
 
-chatSend?.addEventListener("click", sendChatMessage);
-chatInput?.addEventListener("keydown", e => {
-  if(e.key === "Enter") sendChatMessage();
+if(chatSend) chatSend.addEventListener("click", sendChatMessage);
+if(chatInput) chatInput.addEventListener("keydown", e => { 
+  if(e.key === "Enter") sendChatMessage(); 
 });
 
-/* ------------------------------------------
-   VOICE INPUT (Speech-to-text)
------------------------------------------- */
-let recognition;
-if("webkitSpeechRecognition" in window){
-  recognition = new webkitSpeechRecognition();
-  recognition.lang = "en-US";
-
-  chatMic.addEventListener("click", () => recognition.start());
-
-  recognition.onresult = e => {
-    chatInput.value = e.results[0][0].transcript;
-  };
-}
-
-/* ------------------------------------------
-   VOICE OUTPUT (Bot Speaks)
------------------------------------------- */
-function speakText(text){
-  const msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "en-US";
-  msg.pitch = 1.0;
-  msg.rate  = 1.0;
-  speechSynthesis.speak(msg);
-}
-
-
-/* =====================================================
-   CHATBOT SUGGESTION BUTTON ACTIONS
-===================================================== */
-
+// Suggestion Buttons
 document.querySelectorAll(".suggest-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const text = btn.textContent;
+        addUser(text);
+        if(text.toLowerCase().includes("book")) {
+            renderBookingForm(); // Show form
+        } else if(text.toLowerCase().includes("portfolio")) {
+            typeBot("Scrolling to portfolio...");
+            document.getElementById("portfolio").scrollIntoView({behavior:"smooth"});
+        } else {
+            askAI(text);
+        }
+    });
+});
+
+
+/* PRICING → Sheet + Redirect */
+$$(".price-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const action = btn.textContent.trim().toLowerCase();
-
-    if (action.includes("portfolio")) {
-      typeBot("Opening portfolio…");
-      scrollToSection("#portfolio");
-      chatBox.classList.remove("open");
-    }
-
-    else if (action.includes("pricing")) {
-      typeBot("Showing pricing plans…");
-      scrollToSection("#pricing");
-      chatBox.classList.remove("open");
-    }
-
-    else if (action.includes("book")) {
-      typeBot("Taking you to the booking page…");
-      setTimeout(() => {
-        window.location.href = "booking.html";
-      }, 500);
-    }
+    // Get plan name from button data or previous sibling header
+    const plan = btn.dataset.plan || btn.parentElement.querySelector("h3").innerText;
+    
+    // Redirect to booking page with plan name
+    window.location.href = "booking.html?plan=" + encodeURIComponent(plan);
   });
 });
-
-function scrollToSection(id) {
-  const el = document.querySelector(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-

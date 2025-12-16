@@ -1,70 +1,88 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Blog — Arajit</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog — Arajit Halder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site-header">
-<div class="container nav-wrap">
-<div class="brand">DizMe</div>
-<nav class="main-nav">
-<a href="index.html">Home</a>
-<a href="index.html#about">About</a>
-<a href="index.html#portfolio">Portfolio</a>
-<a href="#">Blog</a>
-<a href="index.html#contact">Contact</a>
-</nav>
-</div>
-</header>
 
+  <div id="cursor"></div>
 
-<main>
-<section class="blog-hero container">
-<h1>Blog</h1>
-<p>Thoughts, tutorials, and case studies about design and development.</p>
-</section>
+  <header>
+    <div class="logo">
+      <img src="Images/Logo.png" alt="Logo" />
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#services">Services</a>
+      <a href="blog.html" style="color:var(--accent)">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+        <a href="index.html" class="btn" style="padding: 8px 16px; font-size: 12px;">Back to Home</a>
+    </div>
+  </header>
 
+  <section class="section" style="padding-top: 140px;">
+    <div class="container">
+      <h2>Design Insights</h2>
+      <p class="section-lead">Thoughts, tutorials, and case studies about design.</p>
 
-<section class="blog-list container">
-<article class="post-card">
-<img src="https://via.placeholder.com/900x500.png?text=Article+1" alt="article">
-<div class="post-body">
-<h3><a href="#">Designing Minimal Interfaces: A Practical Guide</a></h3>
-<p class="meta">June 10, 2025 • 5 min read</p>
-<p>A short summary for the article goes here — a compelling sentence that invites the reader to click and read more.</p>
-<a class="read-more" href="#">Read more →</a>
-</div>
-</article>
+      <div class="blog-grid">
+        <article class="blog-card">
+          <div class="blog-tag">Branding</div>
+          <h3>Why Premium Logos Look So Minimal</h3>
+          <p>High-end brands today use fewer shapes and bold clarity. Learn how minimal elements create a strong identity.</p>
+          <div class="blog-meta">
+            <span>Dec 2025</span>
+            <a href="#" class="blog-link">Read Full Article</a>
+          </div>
+        </article>
 
+        <article class="blog-card">
+          <div class="blog-tag">Design Tips</div>
+          <h3>Mastering Visual Hierarchy</h3>
+          <p>Balance, spacing and eye-flow — three things that instantly make your designs cleaner and more professional.</p>
+          <div class="blog-meta">
+            <span>Dec 2025</span>
+            <a href="#" class="blog-link">Read Full Article</a>
+          </div>
+        </article>
 
-<article class="post-card">
-<img src="https://via.placeholder.com/900x500.png?text=Article+2" alt="article">
-<div class="post-body">
-<h3><a href="#">How to Create a Landing Page That Converts</a></h3>
-<p class="meta">May 2, 2025 • 6 min read</p>
-<p>Quick summary for the blog post explaining why it's valuable and what the reader will learn.</p>
-<a class="read-more" href="#">Read more →</a>
-</div>
-</article>
+        <article class="blog-card">
+          <div class="blog-tag">Workflow</div>
+          <h3>From Sketch to Final UI</h3>
+          <p>A behind-the-scenes breakdown of planning, wireframing and polishing a mobile app interface.</p>
+          <div class="blog-meta">
+            <span>Nov 2025</span>
+            <a href="#" class="blog-link">Read Full Article</a>
+          </div>
+        </article>
+        
+        <article class="blog-card">
+            <div class="blog-tag">Freelancing</div>
+            <h3>Pricing Your Design Work</h3>
+            <p>How to confidently charge what you are worth and explain the value of design to clients.</p>
+            <div class="blog-meta">
+              <span>Oct 2025</span>
+              <a href="#" class="blog-link">Read Full Article</a>
+            </div>
+          </article>
+      </div>
+    </div>
+  </section>
 
+  <footer>
+    <div class="container footer-text">
+      <span>© 2025 Arajit Halder — Modern Graphic Designer</span>
+    </div>
+  </footer>
 
-<!-- Add more posts similarly -->
-</section>
-
-
-<footer class="site-footer">
-<div class="container footer-grid">
-<div>© 2025 Arajit. All rights reserved.</div>
-<div><a href="index.html">Back to Home</a></div>
-</div>
-</footer>
-</main>
-
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
