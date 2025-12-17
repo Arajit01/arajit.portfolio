@@ -546,3 +546,69 @@ $$(".price-btn").forEach((btn) => {
     window.location.href = "booking.html?plan=" + encodeURIComponent(plan);
   });
 });
+
+/* ======================================================
+   CHATBOT — ADVANCED DESIGN SERVICE FAQ
+====================================================== */
+
+// ১. নতুন সাজেশনের বাটনগুলো আপডেট করুন
+function updateChatSuggestions() {
+    const suggestionsContainer = document.querySelector(".chatbot-suggestions");
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = `
+            <button class="suggest-btn" onclick="handleFAQ('process')">Design Process</button>
+            <button class="suggest-btn" onclick="handleFAQ('files')">Deliverables</button>
+            <button class="suggest-btn" onclick="handleFAQ('time')">Timeline</button>
+            <button class="suggest-btn" onclick="handleFAQ('refund')">Refunds</button>
+        `;
+    }
+}
+
+// ২. প্রশ্ন অনুযায়ী উত্তর দেওয়ার লজিক
+function handleFAQ(type) {
+    let userQuestion = "";
+    let botReply = "";
+
+    switch(type) {
+        case 'contact':
+            userQuestion = "How can I contact you directly?";
+            botReply = "I'd love to discuss your project! You can reach Arajit directly via:\n\n" +
+                       "📱 WhatsApp: +91 6295577953\n" +
+                       "📧 Email: arajithalder123@gmail.com\n\n" +
+                       "Feel free to drop a message anytime!";
+            break;
+        // আগের কেসগুলো এখানে থাকবে...
+        case 'process':
+            userQuestion = "What is your design process?";
+            botReply = "I start with a discovery phase to understand your brand, then move to sketching, creating 2-3 initial concepts, and finally refining based on your feedback.";
+            break;
+        case 'files':
+            userQuestion = "What files will I receive?";
+            botReply = "You will receive high-resolution files in multiple formats like AI, EPS, SVG, PDF, and PNG for both print and web use.";
+            break;
+        case 'time':
+            userQuestion = "How long does a project take?";
+            botReply = "A single asset like a logo usually takes 3-5 days. Larger branding projects may take 1-2 weeks depending on complexity.";
+            break;
+    }
+
+    if(userQuestion) {
+        addUser(userQuestion); 
+        setTimeout(() => typeBot(botReply), 500); 
+    }
+}
+
+// সাজেশন বাটনগুলোতে 'Direct Contact' বাটনটি যোগ করুন
+function updateChatSuggestions() {
+    const suggestionsContainer = document.querySelector(".chatbot-suggestions");
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = `
+            <button class="suggest-btn" onclick="handleFAQ('contact')">Direct Contact</button>
+            <button class="suggest-btn" onclick="handleFAQ('process')">Design Process</button>
+            <button class="suggest-btn" onclick="handleFAQ('files')">Deliverables</button>
+            <button class="suggest-btn" onclick="handleFAQ('time')">Timeline</button>
+        `;
+    }
+}
+// ৩. পেজ লোড হওয়ার পর সাজেশনগুলো দেখানোর জন্য কল করুন
+window.addEventListener('DOMContentLoaded', updateChatSuggestions);

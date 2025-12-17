@@ -376,11 +376,174 @@
     </div>
   </section>
 
+<section id="faq" class="section reveal">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <p class="section-lead">Quick answers to common inquiries about my design process and services.</p>
+    
+    <div class="faq-container" style="max-width: 800px; margin: 40px auto 0;">
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>How does your design process work?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          <p>My process starts with a discovery phase to understand your brand goals. I then create 2-3 initial concepts, refine the chosen direction based on your feedback, and deliver the final polished assets.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What is the typical project timeline?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Standard assets like a single logo or poster usually take 3-5 business days. Larger branding systems or UI layouts typically take 1-2 weeks depending on complexity.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What final file formats will I receive?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          <p>You will receive high-resolution, industry-standard files including AI, EPS, SVG (vector), PDF, and transparent PNG/JPG for both web and print use.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What is your refund policy?</span>
+          <div class="faq-icon-box"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="faq-answer">
+          <p>I offer a full refund if cancelled before work begins. Partial refunds are available during the concept phase, but no refunds are issued once final files are delivered.</p>
+        </div>
+      </div>
+
+<div class="faq-cta" style="text-align: center; margin-top: 40px; padding: 30px; border-radius: 20px; background: rgba(0, 234, 255, 0.03); border: 1px dashed rgba(0, 234, 255, 0.2);">
+  <h4 style="margin-bottom: 10px; font-size: 18px; color: #fff;">Still have questions?</h4>
+  <p style="font-size: 14px; opacity: 0.8; margin-bottom: 25px;">I'm available for a direct chat to discuss your unique project needs.</p>
+  
+  <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+    <a href="https://wa.me/916295577953" target="_blank" class="btn" style="background: #25D366; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2); color: #fff; border: none;">
+      <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+    </a>
+    
+    <a href="mailto:arajithalder123@gmail.com" class="btn" style="background: transparent; border: 1px solid var(--accent); color: var(--accent); box-shadow: none;">
+      <i class="fa-solid fa-envelope"></i> Email Me
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Extra hover effect for the WhatsApp button specifically */
+  .faq-cta .btn[style*="#25D366"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+    background: #20ba5a !important;
+  }
+</style>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* FAQ Styles */
+  .faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+  }
+  .faq-question {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+  }
+  .faq-question i {
+    color: var(--accent);
+    transition: 0.3s;
+    font-size: 14px;
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.01);
+  }
+  .faq-answer p {
+    padding: 0 20px 20px;
+    font-size: 14px;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .faq-item.active {
+    border-color: var(--accent);
+    background: rgba(0, 234, 255, 0.05);
+  }
+  .faq-item.active .faq-question i {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  // FAQ Accordion Logic
+  document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+      const faqItem = button.parentElement;
+      const isActive = faqItem.classList.contains('active');
+      
+      // Close all other items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+        item.querySelector('.faq-answer').style.maxHeight = null;
+      });
+
+      // Toggle current item
+      if (!isActive) {
+        faqItem.classList.add('active');
+        const answer = faqItem.querySelector('.faq-answer');
+        answer.style.maxHeight = answer.scrollHeight + "px";
+      }
+    });
+  });
+</script>
+
   <footer>
-    <div class="container footer-text">
-      <span>© 2025 Arajit Halder — Modern Graphic Designer</span>
-      <br>
-      <a href="privacy.html" target="_blank" style="color:var(--accent); font-size:12px; text-decoration:none; opacity:0.7; margin-top:8px; display:inline-block;">Privacy Policy</a>
+    <div class="container">
+      <div class="footer-content" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        <span style="font-size: 14px; opacity: 0.9;">© 2025 Arajit Halder — Modern Graphic Designer</span>
+        
+        <div class="footer-links" style="display: flex; gap: 20px; justify-content: center;">
+          <a href="privacy.html" style="color: var(--accent); font-size: 12px; text-decoration: none; opacity: 0.7; transition: 0.3s;">
+            <i class="fa-solid fa-user-shield" style="margin-right: 5px;"></i> Privacy Policy
+          </a>
+          <a href="terms.html" style="color: var(--accent); font-size: 12px; text-decoration: none; opacity: 0.7; transition: 0.3s;">
+            <i class="fa-solid fa-file-invoice" style="margin-right: 5px;"></i> Terms & Refund
+          </a>
+        </div>
+
+        <p style="font-size: 10px; opacity: 0.4; margin-top: 10px; max-width: 400px; line-height: 1.5;">
+          All designs and content are protected. By using this site, you agree to our service terms.
+        </p>
+      </div>
     </div>
   </footer>
 

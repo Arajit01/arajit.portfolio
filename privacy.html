@@ -8,56 +8,114 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .policy-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 50px;
+      backdrop-filter: blur(15px);
+    }
+    .policy-section { margin-bottom: 35px; }
+    .policy-section h3 {
+      color: var(--accent);
+      font-size: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .policy-text {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    .highlight-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+    .highlight-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .highlight-list li i { color: var(--accent); margin-top: 5px; font-size: 12px; }
+  </style>
 </head>
 <body>
 
   <div id="cursor"></div>
 
   <header>
-    <div class="logo">
-      <img src="Images/Logo.png" alt="Logo" />
-    </div>
+    <div class="logo"><img src="Images/Logo.png" alt="Logo" /></div>
     <nav class="main-nav">
       <a href="index.html">Home</a>
       <a href="index.html#portfolio">Portfolio</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="terms.html">Terms</a>
     </nav>
     <div class="header-actions">
       <a href="index.html" class="btn" style="padding: 8px 16px; font-size: 12px;">Back to Home</a>
     </div>
   </header>
 
-  <section class="section" style="padding-top: 140px; min-height: 80vh;">
-    <div class="container" style="max-width: 800px;">
-      <h2>Privacy Policy</h2>
-      <p class="section-lead">Effective Date: December 2025</p>
+  <section class="section" style="padding-top: 140px; min-height: 100vh;">
+    <div class="container" style="max-width: 850px;">
+      <h2 style="margin-bottom: 10px;">Privacy Commitment</h2>
+      <p class="section-lead">Your trust is the foundation of my creative process. Here is how I handle your data.</p>
 
-      <div class="card" style="padding: 40px; cursor: default; transform: none !important; text-align: left;">
-        <div style="font-size: 15px; line-height: 1.8; color: #ddd;">
-          
-          <h3 style="color:var(--accent); margin-bottom:10px;">1. Information We Collect</h3>
-          <p>We collect personal information that you voluntarily provide when you use our "Contact" form or "Booking" system, specifically:</p>
-          <ul style="margin-bottom: 20px; padding-left: 20px;">
-            <li>Your Name</li>
-            <li>Email Address</li>
-            <li>Project Details & Messages</li>
+      <div class="policy-box">
+        <div class="policy-section">
+          <h3><i class="fa-solid fa-database"></i> 1. Data Collection</h3>
+          <p class="policy-text">
+            When you interact with my portfolio—whether through the contact form, booking system, or AI Assistant—I collect specific information to serve you better:
+          </p>
+          <ul class="highlight-list">
+            <li><i class="fa-solid fa-check"></i> <span><strong>Identity Data:</strong> Full name and professional email address.</span></li>
+            <li><i class="fa-solid fa-check"></i> <span><strong>Project Context:</strong> Design briefs, brand guidelines, and project files shared during consultations.</span></li>
+            <li><i class="fa-solid fa-check"></i> <span><strong>Communication Logs:</strong> Messages sent via the AI Chatbot and EmailJS integration.</span></li>
           </ul>
-
-          <h3 style="color:var(--accent); margin-bottom:10px;">2. How We Use Your Information</h3>
-          <p>The information is used solely for the following purposes:</p>
-          <ul style="margin-bottom: 20px; padding-left: 20px;">
-            <li>Responding to your direct inquiries.</li>
-            <li>Scheduling and confirming design sessions.</li>
-            <li>Sending project updates or pricing information you requested.</li>
-          </ul>
-
-          <h3 style="color:var(--accent); margin-bottom:10px;">3. Data Protection</h3>
-          <p>We value your trust. We do not sell, trade, or rent your personal information to third parties. All data submitted via forms is sent securely to our internal management tools (Google Sheets/Email) and is accessed only by Arajit Halder.</p>
-
-          <h3 style="color:var(--accent); margin-bottom:10px;">4. Contact Us</h3>
-          <p>If you have any questions regarding this privacy policy, please contact me directly via the contact form on the homepage.</p>
-        
         </div>
+
+        <div class="policy-section">
+          <h3><i class="fa-solid fa-shield-halved"></i> 2. Information Security</h3>
+          <p class="policy-text">
+            I implement industry-standard security measures to ensure your data remains confidential. I do not sell, trade, or leak your personal details to marketing agencies. Your project data is stored securely using Google Cloud Infrastructure via Google Apps Script.
+          </p>
+        </div>
+
+        <div class="policy-section">
+          <h3><i class="fa-solid fa-eye"></i> 3. Portfolio & Confidentiality</h3>
+          <p class="policy-text">
+            By default, I showcase completed projects in my portfolio to demonstrate my expertise. However, I deeply respect business confidentiality. If your project requires an NDA or you prefer it not to be displayed publicly, please notify me during the booking phase.
+          </p>
+        </div>
+
+        <div class="policy-section">
+          <h3><i class="fa-solid fa-gears"></i> 4. Third-Party Integrations</h3>
+          <p class="policy-text">
+            To provide a seamless experience, this site uses:
+          </p>
+          <ul class="highlight-list">
+            <li><i class="fa-solid fa-bolt"></i> <span><strong>EmailJS:</strong> For reliable contact form delivery.</span></li>
+            <li><i class="fa-solid fa-code"></i> <span><strong>Google Apps Script:</strong> For automated booking and database management.</span></li>
+            <li><i class="fa-solid fa-robot"></i> <span><strong>Custom AI:</strong> To provide instant support and project guidance.</span></li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+  <h3><i class="fa-solid fa-envelope-open-text"></i> 5. Contact & Data Requests</h3>
+  <p class="policy-text">
+    You have the right to access, modify, or request the deletion of your data from my records. For any privacy-related inquiries, please reach out directly:
+  </p>
+  <div style="margin-top: 15px; padding: 20px; background: rgba(0,234,255,0.05); border-radius: 12px; border: 1px dashed var(--accent);">
+     <p style="margin:0; font-weight:600; color:var(--accent);">Arajit Halder</p>
+     <p style="margin:5px 0 0; font-size:14px;"><strong>WhatsApp:</strong> +91 6295577953</p>
+     <p style="margin:5px 0 0; font-size:14px;"><strong>Email:</strong> arajithalder123@gmail.com</p>
+  </div>
+</div>
       </div>
     </div>
   </section>
@@ -69,5 +127,52 @@
   </footer>
 
   <script src="script.js"></script>
+
+<button id="backToTop" title="Go to top" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: var(--accent); color: #000; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,234,255,0.3);">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <style>
+    /* Smooth Reveal Animation */
+    .policy-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+    .policy-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+
+  <script>
+    // Back to Top Logic
+    const btt = document.getElementById("backToTop");
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    };
+    btt.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Scroll Reveal Logic
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.policy-section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+
 </body>
 </html>
