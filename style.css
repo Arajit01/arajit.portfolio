@@ -407,6 +407,8 @@ h2{
   50%     { opacity:.75; transform: scale(1.08); }
 }
 
+
+
 /* contact */
 .contact-wrap{
   max-width:760px;
@@ -1401,3 +1403,105 @@ body[data-theme="light"] .user-msg{
     color: #fff;
     text-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
 }
+
+
+
+/* ===========================
+   HEADER RESPONSIVE FIX
+=========================== */
+
+header{
+  width:100%;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.main-nav{
+  display:flex;
+  gap:28px;
+}
+
+.menu-toggle{
+  display:none;
+}
+
+/* Mobile */
+@media (max-width: 992px){
+  .main-nav{
+    display:none;
+  }
+
+  .menu-toggle{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .menu-toggle span{
+    width:26px;
+    height:2px;
+    background:#fff;
+  }
+}
+
+@media screen and (max-width: 768px) {
+    /* ইমেজ যে কন্টেইনারে আছে সেটিকে গোল রাখা */
+    .about-img {
+        width: 250px;       /* মোবাইলের জন্য রিং এর সাইজ একটু ছোট করা */
+        height: 250px;
+        margin: 0 auto 30px; /* মাঝখানে রাখা এবং নিচে গ্যাপ দেওয়া */
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* রিং বা বর্ডার ডিজাইন ঠিক করা */
+    .about-img::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        border: 15px solid var(--main-color); /* আপনার কালার ভেরিয়েবল বা কোড দিন */
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    /* ইমেজটিকে রিং এর ভেতর ফিট করা */
+    .about-img img {
+        width: 90%;          /* রিং এর থেকে একটু ছোট যাতে ভেতরে দেখায় */
+        height: 90%;
+        object-fit: cover;
+        border-radius: 50%;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* মেনু বারটি ডিফল্টভাবে স্ক্রিনের বাইরে থাকবে */
+    .navbar {
+        position: absolute;
+        top: 100%;
+        left: -100%; /* মেনু হাইড করে রাখা */
+        width: 100%;
+        padding: 1rem 3%;
+        background: var(--bg-color); /* আপনার ব্যাকগ্রাউন্ড কালার */
+        transition: 0.25s ease;
+    }
+
+    /* যখন মেনু আইকনে ক্লিক করা হবে */
+    .navbar.active {
+        left: 0; /* মেনু স্ক্রিনে চলে আসবে */
+    }
+
+    .navbar a {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+    }
+}
+
+
