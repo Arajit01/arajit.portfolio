@@ -1212,3 +1212,30 @@ body[data-theme="light"] .fullscreen-menu a{
   text-align: center;
   opacity: .6;
 }
+
+
+/* Google Font for Signature */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+
+.signature-style {
+    font-family: 'Dancing Script', cursive; /* এটি একটি স্টাইলিশ হ্যান্ডরাইটিং লুক দেবে */
+    font-size: 28px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 234, 255, 0.4); /* হালকা গ্লো ইফেক্ট */
+}
+
+.footer-link {
+    color: #00d2ff; /* Apnar site-er cyan color-er sathe matching */
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 10px;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+}

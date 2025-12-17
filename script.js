@@ -219,7 +219,6 @@ $$(".card").forEach((card) => {
 /* ======================================================
    WEBHOOK URL (IMPORTANT: PASTE YOUR URL HERE)
 ====================================================== */
-// *** এই URL-টি তোমার Google Apps Script থেকে পাওয়া Web App URL হতে হবে ***
 const BOOKING_WEBHOOK = "YOUR_WEB_APP_URL_HERE"; 
 
 
@@ -406,7 +405,6 @@ function renderBookingForm() {
     chatBody.appendChild(div);
     chatBody.scrollTop = chatBody.scrollHeight;
 
-    // Add listener to this specific form
     const btn = div.querySelector(".chat-submit-btn");
     btn.addEventListener("click", () => {
         const name = div.querySelector(".c-name").value;
@@ -422,7 +420,6 @@ function renderBookingForm() {
         btn.textContent = "Booking...";
         btn.disabled = true;
 
-        // Send to Sheet via Webhook
         fetch(BOOKING_WEBHOOK, {
             method: "POST",
             mode: "no-cors",
@@ -435,8 +432,17 @@ function renderBookingForm() {
                 plan: "Chat Booking"
             })
         }).then(() => {
-            div.remove(); // Remove form after success
-            typeBot(`Thanks ${name}! Your booking for ${date} at ${time} is confirmed. I've sent you an email.`);
+            // Updated Success Handler with Invoice Button
+            div.innerHTML = `
+                <div class="success-msg" style="text-align:center; padding:20px;">
+                    <i class="fa-solid fa-circle-check" style="font-size:40px; color:var(--accent);"></i>
+                    <h3 style="margin-top:15px; color:#fff;">Booking Confirmed!</h3>
+                    <p style="font-size:14px; opacity:0.8; color:#fff;">Thanks ${name}! Check your email for details.</p>
+                    <button onclick="downloadInvoice('${name}', '${time}', '${date}')" class="btn" style="margin-top:15px; font-size:12px; cursor:pointer; background:var(--accent); border:none; border-radius:8px; padding:10px;">
+                        <i class="fa-solid fa-file-invoice"></i> Download Invoice
+                    </button>
+                </div>
+            `;
         }).catch(() => {
             btn.textContent = "Retry";
             btn.disabled = false;
@@ -445,126 +451,7 @@ function renderBookingForm() {
     });
 }
 
-// OFFLINE FALLBACK
-function getOfflineReply(text) {
-  const t = text.toLowerCase();
-  if (t.includes("hi") || t.includes("hello")) return "Hello! I'm Arajit's AI assistant.";
-  if (t.includes("price") || t.includes("cost")) return "My pricing starts at ₹999. Check the Pricing section.";
-  return "I'm offline right now, but you can use the booking form!";
-}
-
-async function askAI(msg){
-  const thinking = showThinking();
-  let replied = false;
-
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
-
-    const response = await fetch(CHATBOT_API, {
-      method: "POST",
-      redirect: "follow", 
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ type: "chat", message: msg, memory: chatMemory }),
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-
-    if(response.ok) {
-        const data = await response.json();
-        const reply = data.reply;
-        if(reply) {
-            thinking.remove();
-            typeBot(reply);
-            chatMemory.push(msg);
-            chatMemory.push(reply);
-            replied = true;
-        }
-    }
-  } catch(err) { }
-
-  if (!replied) {
-    thinking.remove();
-    typeBot(getOfflineReply(msg));
-  }
-}
-
-function sendChatMessage(){
-  const text = chatInput.value.trim();
-  if(!text) return;
-  
-  addUser(text);
-  chatInput.value = "";
-  
-  const lower = text.toLowerCase();
-  
-  // *** TRIGGER IN-CHAT BOOKING ***
-  if (lower.includes("book") || lower.includes("appointment") || lower.includes("schedule")) {
-    renderBookingForm(); // Show form instead of redirecting
-    return;
-  }
-
-  if (lower.includes("price") || lower.includes("cost")) {
-    typeBot("Scrolling to pricing section...");
-    document.getElementById("pricing").scrollIntoView({behavior:"smooth"});
-    return;
-  }
-
-  askAI(text);
-}
-
-if(chatSend) chatSend.addEventListener("click", sendChatMessage);
-if(chatInput) chatInput.addEventListener("keydown", e => { 
-  if(e.key === "Enter") sendChatMessage(); 
-});
-
-// Suggestion Buttons
-document.querySelectorAll(".suggest-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const text = btn.textContent;
-        addUser(text);
-        if(text.toLowerCase().includes("book")) {
-            renderBookingForm(); // Show form
-        } else if(text.toLowerCase().includes("portfolio")) {
-            typeBot("Scrolling to portfolio...");
-            document.getElementById("portfolio").scrollIntoView({behavior:"smooth"});
-        } else {
-            askAI(text);
-        }
-    });
-});
-
-
-/* PRICING → Sheet + Redirect */
-$$(".price-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    // Get plan name from button data or previous sibling header
-    const plan = btn.dataset.plan || btn.parentElement.querySelector("h3").innerText;
-    
-    // Redirect to booking page with plan name
-    window.location.href = "booking.html?plan=" + encodeURIComponent(plan);
-  });
-});
-
-/* ======================================================
-   CHATBOT — ADVANCED DESIGN SERVICE FAQ
-====================================================== */
-
-// ১. নতুন সাজেশনের বাটনগুলো আপডেট করুন
-function updateChatSuggestions() {
-    const suggestionsContainer = document.querySelector(".chatbot-suggestions");
-    if (suggestionsContainer) {
-        suggestionsContainer.innerHTML = `
-            <button class="suggest-btn" onclick="handleFAQ('process')">Design Process</button>
-            <button class="suggest-btn" onclick="handleFAQ('files')">Deliverables</button>
-            <button class="suggest-btn" onclick="handleFAQ('time')">Timeline</button>
-            <button class="suggest-btn" onclick="handleFAQ('refund')">Refunds</button>
-        `;
-    }
-}
-
-// ২. প্রশ্ন অনুযায়ী উত্তর দেওয়ার লজিক
+// FAQ Logic for Chatbot
 function handleFAQ(type) {
     let userQuestion = "";
     let botReply = "";
@@ -572,12 +459,8 @@ function handleFAQ(type) {
     switch(type) {
         case 'contact':
             userQuestion = "How can I contact you directly?";
-            botReply = "I'd love to discuss your project! You can reach Arajit directly via:\n\n" +
-                       "📱 WhatsApp: +91 6295577953\n" +
-                       "📧 Email: arajithalder123@gmail.com\n\n" +
-                       "Feel free to drop a message anytime!";
+            botReply = "I'd love to discuss your project! You can reach Arajit directly via:\n\n📱 WhatsApp: +91 6295577953\n📧 Email: arajithalder123@gmail.com\n\nFeel free to drop a message anytime!";
             break;
-        // আগের কেসগুলো এখানে থাকবে...
         case 'process':
             userQuestion = "What is your design process?";
             botReply = "I start with a discovery phase to understand your brand, then move to sketching, creating 2-3 initial concepts, and finally refining based on your feedback.";
@@ -590,6 +473,10 @@ function handleFAQ(type) {
             userQuestion = "How long does a project take?";
             botReply = "A single asset like a logo usually takes 3-5 days. Larger branding projects may take 1-2 weeks depending on complexity.";
             break;
+        case 'refund':
+            userQuestion = "What about refunds?";
+            botReply = "I offer full refunds before work starts and partial refunds during the process. Once final files are delivered, no refunds are issued as per my policy.";
+            break;
     }
 
     if(userQuestion) {
@@ -598,7 +485,6 @@ function handleFAQ(type) {
     }
 }
 
-// সাজেশন বাটনগুলোতে 'Direct Contact' বাটনটি যোগ করুন
 function updateChatSuggestions() {
     const suggestionsContainer = document.querySelector(".chatbot-suggestions");
     if (suggestionsContainer) {
@@ -610,5 +496,77 @@ function updateChatSuggestions() {
         `;
     }
 }
-// ৩. পেজ লোড হওয়ার পর সাজেশনগুলো দেখানোর জন্য কল করুন
+
+// AI Chat Integration
+async function askAI(msg){
+  const thinking = showThinking();
+  let replied = false;
+  try {
+    const response = await fetch(CHATBOT_API, {
+      method: "POST",
+      redirect: "follow", 
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ type: "chat", message: msg, memory: chatMemory })
+    });
+    if(response.ok) {
+        const data = await response.json();
+        const reply = data.reply;
+        if(reply) {
+            thinking.remove();
+            typeBot(reply);
+            chatMemory.push(msg, reply);
+            replied = true;
+        }
+    }
+  } catch(err) { }
+  if (!replied) {
+    thinking.remove();
+    typeBot("I'm currently offline, but you can book a session or use the FAQ buttons!");
+  }
+}
+
+function sendChatMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
+  addUser(text);
+  chatInput.value = "";
+  const lower = text.toLowerCase();
+  if (lower.includes("book") || lower.includes("appointment")) {
+    renderBookingForm();
+  } else if (lower.includes("price") || lower.includes("cost")) {
+    typeBot("Scrolling to pricing...");
+    document.getElementById("pricing").scrollIntoView({behavior:"smooth"});
+  } else {
+    askAI(text);
+  }
+}
+
+// Global Event Listeners
+if(chatSend) chatSend.addEventListener("click", sendChatMessage);
+if(chatInput) chatInput.addEventListener("keydown", e => { if(e.key === "Enter") sendChatMessage(); });
 window.addEventListener('DOMContentLoaded', updateChatSuggestions);
+
+// Invoice Downloader Function
+function downloadInvoice(name, time, date) {
+    const invoiceContent = `
+        INVOICE - ARAJIT HALDER
+        -----------------------
+        Client: ${name}
+        Date: ${date}
+        Time Slot: ${time}
+        Status: Confirmed
+        
+        Contact: arajithalder123@gmail.com
+        WhatsApp: +91 6295577953
+        -----------------------
+        Thank you for your business!
+    `;
+    const blob = new Blob([invoiceContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Invoice_Arajit_Halder_${name}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+}

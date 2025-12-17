@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Graphic Design Agreement | Arajit Halder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #d4af37; /* Gold accent for premium feel */
+            --text-main: #333;
+            --text-light: #666;
+            --bg-gray: #f9f9f9;
+        }
+
+        body { 
+            background-color: #d1d1d1; 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 50px 0;
+            color: var(--text-main);
+        }
+
+        .container {
+            background: #fff;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 80px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Premium Gold Border at the top */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin: 0;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .header-meta { text-align: right; font-size: 13px; color: var(--text-light); }
+
+        .party-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .party-box h4 {
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .party-details { font-size: 14px; line-height: 1.6; }
+        .party-details strong { font-size: 16px; color: var(--primary); }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 40px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 2px;
+            background: var(--accent);
+            margin-right: 10px;
+        }
+
+        p, li { font-size: 14px; line-height: 1.8; color: var(--text-main); text-align: justify; }
+
+        .payment-table {
+            width: 100%;
+            background: var(--bg-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+        }
+
+        .sig-card {
+            width: 40%;
+            text-align: center;
+        }
+
+        .sig-wrapper {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .sig-img {
+            max-width: 160px;
+            filter: grayscale(1) contrast(1.2); /* Makes signature look more integrated */
+        }
+
+        .sig-line {
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .footer-note {
+            margin-top: 60px;
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 40px; }
+            .no-print { display: none; }
+        }
+
+        .btn-print {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-print:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <h1>Service Agreement</h1>
+            <p style="color:var(--accent); font-weight:600; margin:5px 0 0 0;">Creative Design & Brand Identity</p>
+        </div>
+        <div class="header-meta">
+    <strong>REF:</strong> AG-2025/001<br>
+    <strong>DATE:</strong> <span id="current-date">Loading...</span>
+</div>
+    </div>
+
+    <div class="party-grid">
+        <div class="party-box">
+            <h4>Prepared For</h4>
+            <div class="party-details">
+                <strong>[Client Name/Company]</strong><br>
+                [Address Line 1]<br>
+                [Phone/Email]
+            </div>
+        </div>
+        <div class="party-box">
+            <h4>Created By</h4>
+            <div class="party-details">
+                <strong>Arajit Halder</strong><br>
+                Creative Graphic Designer<br>
+                ✉︎ arajithalder123@gmail.com<br>
+                📞+91 6295577953
+            </div>
+        </div>
+    </div>
+
+    <h3>01. Project Scope</h3>
+    <p>The designer (Arajit) shall deliver a comprehensive design package consisting of high-quality assets tailored to the client's requirements. This includes but is not limited to: <strong>Custom Brand Identity, Professional Assets, and Source Files.</strong></p>
+
+    <h3>02. Revisions & Refinement</h3>
+    <p>A premium service includes <strong>3 refinement rounds</strong>. Any structural changes requested after the final approval will be billed at an hourly rate. We aim for perfection through collaborative feedback.</p>
+
+    <h3>03. Compensation & Rights</h3>
+    <div class="payment-table">
+        <p style="margin:0;"><strong>Standard Fee:</strong> [Insert Amount]</p>
+        <p style="margin:5px 0 0 0; font-size:13px; color:var(--text-light);">50% Commencement Deposit | 50% Final Release Payment</p>
+    </div>
+    <p style="font-size: 12px; margin-top: 10px;">* Full intellectual property and usage rights are transferred to the Client only upon 100% completion of payment.</p>
+
+    <h3>04. Confidentiality</h3>
+    <p>Both parties agree to protect and keep secret all proprietary information, trade secrets, and internal data shared during the lifecycle of this project.</p>
+
+    <div class="signature-section">
+        <div class="sig-card">
+            <div class="sig-wrapper">
+                </div>
+            <div class="sig-line">Authorized Client Signature</div>
+        </div>
+        
+        <div class="sig-card">
+            <div class="sig-wrapper">
+                <img src="Sign.png" alt="Arajit" class="sig-img">
+            </div>
+            <div class="sig-line">Designer Signature</div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        This document serves as a binding agreement between the Client and Arajit. <br>
+        Thank you for choosing premium design services.
+    </div>
+</div>
+
+<div class="no-print">
+    <button class="btn-print" onclick="window.print()">Export as Professional PDF</button>
+</div>
+
+<script>
+    function updateDate() {
+        const dateElement = document.getElementById('current-date');
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        
+        // English (United States) format-e date dekhabe
+        dateElement.innerText = today.toLocaleDateString('en-US', options);
+    }
+
+    // Page load hobar sathe sathe function-ti cholbe
+    window.onload = updateDate;
+</script>
+
+</body>
+</html>

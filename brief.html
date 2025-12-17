@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - Arajit Halder</title>
+    <style>
+        :root {
+            --accent: #00eaff;
+            --bg: #05060a;
+            --text: #ffffff;
+            --muted: rgba(255, 255, 255, 0.6);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px;
+        }
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+        .logo-section h1 {
+            color: var(--accent);
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+        .invoice-details {
+            text-align: right;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .billing-info h3 {
+            color: var(--accent);
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .billing-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th {
+            text-align: left;
+            border-bottom: 2px solid var(--accent);
+            padding: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+        .total-section {
+            text-align: right;
+        }
+        .total-row {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.5;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+        @media print {
+            body { background: white; color: black; padding: 0; }
+            .invoice-container { box-shadow: none; border: 1px solid #ccc; width: 100%; }
+            .accent { color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-container">
+    <div class="header">
+        <div class="logo-section">
+            <h1>ARAJIT HALDER</h1>
+            <p style="font-size: 12px; opacity: 0.7;">Modern Graphic Designer</p>
+        </div>
+        <div class="invoice-details">
+            <h2 style="margin: 0; color: var(--accent);">INVOICE</h2>
+            <p style="margin: 5px 0; font-size: 14px;">#INV-2025001</p>
+            <p style="margin: 0; font-size: 14px;">Date: December 17, 2025</p>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <div class="billing-info">
+            <h3>Bill To:</h3>
+            <p><strong>Client Name:</strong> [Client Name]</p>
+            <p><strong>Business:</strong> [Client Business Name]</p>
+            <p><strong>Email:</strong> client@example.com</p>
+        </div>
+        <div class="billing-info" style="text-align: right;">
+            <h3>From:</h3>
+            <p><strong>Arajit Halder</strong></p>
+            <p>WhatsApp: +91 6295577953</p>
+            <p>Email: arajithalder123@gmail.com</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Logo Design & Brand Identity (Premium Package)</td>
+                <td>1</td>
+                <td>₹4,999</td>
+                <td>₹4,999</td>
+            </tr>
+            <tr>
+                <td>Social Media Creative Assets</td>
+                <td>5</td>
+                <td>₹500</td>
+                <td>₹2,500</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <p>Subtotal: ₹7,499</p>
+        <p>Discount (10%): -₹750</p>
+        <p class="total-row">Grand Total: ₹6,749</p>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; background: rgba(0, 234, 255, 0.05); border-radius: 10px; border-left: 4px solid var(--accent);">
+        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: var(--accent);">Payment Instructions:</h4>
+        <p style="font-size: 13px; margin: 0; opacity: 0.8;">
+            Please complete the payment via WhatsApp Pay, UPI, or Direct Bank Transfer. 
+            Confirm after transaction with a screenshot.
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for choosing my design services! Looking forward to more collaborations.</p>
+        <p>© 2025 Arajit Halder | www.arajithalder.com</p>
+    </div>
+</div>
+
+</body>
+</html>
