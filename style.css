@@ -644,49 +644,64 @@ footer{
   to{ transform:translateX(-50%); }
 }
 
+.testimonial-marquee{
+  position:relative;
+  overflow:hidden;
+  margin-top:40px;
+}
+
+.testimonial-track{
+  display:flex;
+  gap:24px;
+  width:max-content;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+
+/* Fade edges */
+.fade-left,.fade-right{
+  position:absolute;
+  top:0;bottom:0;
+  width:90px;
+  z-index:5;
+  pointer-events:none;
+}
+.fade-left{
+  left:0;
+  background:linear-gradient(90deg,var(--bg),transparent);
+}
+.fade-right{
+  right:0;
+  background:linear-gradient(270deg,var(--bg),transparent);
+}
+
 .testimonial-item{
-  min-width:360px;
+  min-width:380px;
   display:flex;
   gap:16px;
-  align-items:flex-start;
   background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.4);
-  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:20px;
+  padding:22px;
+  cursor:pointer;
+  transition:.3s;
+}
+.testimonial-item:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 20px 60px rgba(0,234,255,0.25);
 }
 
-/* client image */
+/* Client photo */
 .testimonial-item img{
-  width:54px;
-  height:54px;
+  width:56px;
+  height:56px;
   border-radius:50%;
-  object-fit:cover;
   border:2px solid var(--accent);
-  box-shadow:0 0 12px rgba(0,234,255,0.4);
-}
-
-/* text */
-.t-content{
-  font-size:14px;
-}
-
-.t-content .stars{
-  color:var(--accent);
-  font-size:14px;
-  margin-bottom:6px;
-}
-
-.t-content p{
-  opacity:.85;
-  line-height:1.5;
-  margin-bottom:6px;
-}
-
-.t-content span{
-  font-size:12px;
-  opacity:.7;
+  box-shadow:0 0 14px rgba(0,234,255,0.45);
 }
 
 /* Pause on hover */
@@ -694,11 +709,31 @@ footer{
   animation-play-state:paused;
 }
 
-/* Mobile */
-@media(max-width:600px){
-  .testimonial-item{
-    min-width:300px;
-  }
+/* Modal */
+.testimonial-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:3000;
+}
+.testimonial-modal.open{display:flex;}
+.modal-card{
+  background:var(--card-bg);
+  padding:30px;
+  border-radius:20px;
+  max-width:520px;
+  color:#fff;
+  position:relative;
+}
+.modal-card button{
+  position:absolute;
+  top:14px;right:18px;
+  background:none;border:none;
+  font-size:26px;color:#fff;
+  cursor:pointer;
 }
 .pricing-grid{
   display:grid;

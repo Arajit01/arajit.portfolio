@@ -241,10 +241,13 @@
     <p class="section-lead">What clients say about working with me.</p>
 
     <div class="testimonial-marquee">
+      <div class="fade-left"></div>
+      <div class="fade-right"></div>
+
       <div class="testimonial-track">
 
-        <!-- ITEM -->
-        <div class="testimonial-item">
+        <!-- CARD -->
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client1.jpg" alt="Priya Sharma">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -253,7 +256,7 @@
           </div>
         </div>
 
-        <div class="testimonial-item">
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client2.jpg" alt="Rahul Sen">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -262,7 +265,7 @@
           </div>
         </div>
 
-        <div class="testimonial-item">
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client3.jpg" alt="Ritu Das">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -270,16 +273,9 @@
             <span>— Ritu Das</span>
           </div>
         </div>
-        <div class="testimonial-item">
+
+       <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client4.jpg" alt="Ritu Das">
-          <div class="t-content">
-            <div class="stars">★★★★★</div>
-            <p>“Super responsive and delivers high-quality work fast. Highly recommended!”</p>
-            <span>— Ritu Das</span>
-          </div>
-        </div>
-       <div class="testimonial-item">
-          <img src="Images/client5.jpg" alt="Ritu Das">
           <div class="t-content">
             <div class="stars">★★★★★</div>
             <p>“Super responsive and delivers high-quality work fast. Highly recommended!”</p>
@@ -288,7 +284,7 @@
         </div>
 
         <!-- DUPLICATE for infinite loop -->
-        <div class="testimonial-item">
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client1.jpg" alt="Priya Sharma">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -297,7 +293,7 @@
           </div>
         </div>
 
-        <div class="testimonial-item">
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client2.jpg" alt="Rahul Sen">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -306,7 +302,7 @@
           </div>
         </div>
 
-        <div class="testimonial-item">
+        <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client3.jpg" alt="Ritu Das">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -314,7 +310,8 @@
             <span>— Ritu Das</span>
           </div>
         </div>
-        <div class="testimonial-item">
+
+       <div class="testimonial-item" onclick="openTestimonial(this)">
           <img src="Images/client4.jpg" alt="Ritu Das">
           <div class="t-content">
             <div class="stars">★★★★★</div>
@@ -322,20 +319,20 @@
             <span>— Ritu Das</span>
           </div>
         </div>
-       <div class="testimonial-item">
-          <img src="Images/client5.jpg" alt="Ritu Das">
-          <div class="t-content">
-            <div class="stars">★★★★★</div>
-            <p>“Super responsive and delivers high-quality work fast. Highly recommended!”</p>
-            <span>— Ritu Das</span>
-          </div>
-        </div>
-
 
       </div>
     </div>
   </div>
 </section>
+
+<!-- MODAL -->
+<div id="testimonialModal" class="testimonial-modal">
+  <div class="modal-card">
+    <button onclick="closeTestimonial()">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
 
 
   <section id="pricing" class="section reveal">
