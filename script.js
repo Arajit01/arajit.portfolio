@@ -598,14 +598,19 @@ if(menuToggle && fullscreenMenu){
 }
 
 
-function openTestimonial(card){
-  const modal = document.getElementById("testimonialModal");
-  const content = document.getElementById("modalContent");
-  content.innerHTML = card.innerHTML;
-  modal.classList.add("open");
-}
+// Small popup image viewer
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("client-photo")) {
+    const modal = document.getElementById("photoModal");
+    const modalImg = document.getElementById("modalPhoto");
+    modalImg.src = e.target.src;
+    modal.classList.add("show");
+  }
+});
 
-function closeTestimonial(){
-  document.getElementById("testimonialModal").classList.remove("open");
-}
+document.getElementById("photoModal").addEventListener("click", () => {
+  document.getElementById("photoModal").classList.remove("show");
+});
+
+
 

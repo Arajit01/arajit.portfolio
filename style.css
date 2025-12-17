@@ -1572,5 +1572,37 @@ header{
 }
 
 
+/* IMAGE LIGHTBOX */
+.photo-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:5000;
+}
+
+.client-photo {
+  cursor: pointer;
+
+}
+.photo-modal img{
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 22px rgba(0,234,255,0.45);
+  animation: pop .25s ease;
+}
+@keyframes pop{
+  from{transform:scale(.4);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+.photo-modal.show{
+  display:flex;
+}
+
 
 
