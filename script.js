@@ -570,3 +570,42 @@ function downloadInvoice(name, time, date) {
     a.click();
     window.URL.revokeObjectURL(url);
 }
+
+
+
+/* ==============================
+   MOBILE MENU FIX (FINAL)
+============================== */
+const menuToggle = document.getElementById("menuToggle");
+const fullscreenMenu = document.getElementById("fullscreenMenu");
+
+if(menuToggle && fullscreenMenu){
+  menuToggle.addEventListener("click", () => {
+    menuToggle.classList.toggle("open");
+    fullscreenMenu.classList.toggle("open");
+    document.body.style.overflow =
+      fullscreenMenu.classList.contains("open") ? "hidden" : "";
+  });
+
+  // Close menu on link click
+  fullscreenMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      fullscreenMenu.classList.remove("open");
+      menuToggle.classList.remove("open");
+      document.body.style.overflow = "";
+    });
+  });
+}
+
+
+function openTestimonial(card){
+  const modal = document.getElementById("testimonialModal");
+  const content = document.getElementById("modalContent");
+  content.innerHTML = card.innerHTML;
+  modal.classList.add("open");
+}
+
+function closeTestimonial(){
+  document.getElementById("testimonialModal").classList.remove("open");
+}
+

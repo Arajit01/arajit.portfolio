@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel — Arajit Halder</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #05060a; color: #fff; font-family: 'Poppins', sans-serif; }
+        .dashboard { padding: 50px; }
+        .stats-container { display: flex; gap: 20px; margin-bottom: 30px; }
+        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; flex: 1; border: 1px solid rgba(0,234,255,0.2); }
+        .card h2 { color: var(--accent); font-size: 32px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.02); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { background: var(--accent); color: #000; }
+        .status { color: #25D366; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="dashboard container">
+        <h1>Welcome back, Arajit</h1>
+        <div class="stats-container">
+            <div class="card"><h3>Total Bookings</h3><h2 id="totalBookings">0</h2></div>
+            <div class="card"><h3>Active Briefs</h3><h2 id="totalBriefs">0</h2></div>
+        </div>
+
+        <h3>Recent Client Activities</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Plan</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="adminTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Password Protection
+        const pass = prompt("Access Restricted. Enter Admin Key:");
+        if (pass !== "Arajit@2025") { // আপনার পছন্দের পাসওয়ার্ড
+            window.location.href = "index.html";
+        }
+
+        // Fetch data from your Google Sheet
+        const WEB_APP_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL"; 
+
+        async function fetchAdminData() {
+            try {
+                const res = await fetch(WEB_APP_URL + "?action=read");
+                const data = await res.json();
+                const tbody = document.getElementById('adminTableBody');
+                document.getElementById('totalBookings').innerText = data.length;
+                
+                data.reverse().forEach(row => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${row.date}</td>
+                            <td>${row.name}</td>
+                            <td>${row.plan}</td>
+                            <td class="status">Confirmed</td>
+                        </tr>
+                    `;
+                });
+            } catch(e) { console.log("Error loading data"); }
+        }
+        fetchAdminData();
+    </script>
+</body>
+</html>
