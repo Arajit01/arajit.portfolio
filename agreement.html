@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary: #0a0a0a;
-            --accent: #d4af37; /* Gold Premium Accent */
+            --accent: #d4af37;
             --text-main: #333;
             --bg-gray: #f4f7f6;
         }
@@ -29,7 +29,6 @@
             position: relative;
         }
 
-        /* Header Section */
         .header {
             display: flex;
             justify-content: space-between;
@@ -43,15 +42,17 @@
         .header p { margin: 5px 0 0 0; color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 12px; }
         .meta-data { text-align: right; font-size: 13px; color: #777; line-height: 1.6; }
 
-        /* Party Details Grid */
         .party-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 40px; 
+            margin-bottom: 40px;
         }
+
         .party-box h4 { font-size: 11px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; letter-spacing: 1px; }
         .party-details { font-size: 14px; line-height: 1.6; }
         .party-details strong { font-size: 16px; color: var(--primary); }
 
-        /* Content Styles */
         h3 { font-size: 18px; color: var(--primary); margin-top: 35px; border-left: 3px solid var(--accent); padding-left: 15px; }
         p, li { font-size: 14px; line-height: 1.8; color: #444; text-align: justify; }
 
@@ -63,22 +64,23 @@
             margin: 20px 0;
         }
 
-        /* Signature Section */
         .signature-section {
-            display: flex; justify-content: space-between; margin-top: 80px;
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 80px;
         }
+
         .sig-box { width: 42%; text-align: center; }
         .sig-container { 
             height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
         }
         .sig-image { 
-            max-width: 180px; filter: grayscale(1) contrast(1.1); /* Professional blend */
+            max-width: 180px; filter: grayscale(1) contrast(1.1);
         }
         .sig-line { border-top: 1px solid #333; padding-top: 10px; font-weight: 700; font-size: 13px; text-transform: uppercase; }
 
         .footer-tag { text-align: center; margin-top: 60px; font-size: 11px; color: #aaa; border-top: 1px solid #eee; padding-top: 20px; }
 
-        /* Print Controls */
         .no-print { text-align: center; margin-top: 30px; }
         .btn-print {
             background: var(--primary); color: white; border: none; padding: 12px 30px; 
@@ -91,6 +93,25 @@
             .container { box-shadow: none; border-top: 4px solid var(--accent); width: 100%; margin: 0; }
             .no-print { display: none; }
         }
+
+        /* MOBILE RESPONSIVE FIX */
+        @media (max-width: 900px) {
+            body { padding: 20px; }
+            .container { padding: 40px; }
+            .header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .header h1 { font-size: 26px; }
+            .party-grid { grid-template-columns: 1fr; gap: 20px; }
+            h3 { font-size: 16px; }
+            p, li { font-size: 13px; line-height: 1.7; }
+            .signature-section { flex-direction: column; gap: 50px; margin-top: 60px; }
+            .sig-box { width: 100%; }
+        }
+
+        @media (max-width: 520px) {
+            .container { padding: 25px; }
+            .header h1 { font-size: 22px; }
+        }
+
     </style>
 </head>
 <body>
@@ -164,7 +185,6 @@
 </div>
 
 <script>
-    // Automatic Real-Time Date Update
     function setDates() {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const now = new Date().toLocaleDateString('en-US', options);
